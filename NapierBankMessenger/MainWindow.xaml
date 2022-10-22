@@ -7,15 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600" 
-        Width="920"
+        Width="1200"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True">
 
-    <Border Background="#272537"
-            CornerRadius="20">
+    <Border CornerRadius="20">
+        
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
+                <GradientStop Color="#FF003E0C" Offset="0.0" />
+                <GradientStop Color="#FF2DC352" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>
         
         <Grid>
             <Grid.ColumnDefinitions>
@@ -28,14 +34,15 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
         
-
+            <!-- Page title Top Left -->
             <TextBlock Text="Napier Bank"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Foreground="White"
                        FontSize="22"
-                       Margin="20,0,0,0"/>
-
+                       Margin="10,0,0,0"/>
+            
+            <!-- Left hand Column -->
             <StackPanel Grid.Row="1">
                 
                 <RadioButton Content="Home"
@@ -57,7 +64,19 @@
                              Style="{StaticResource NavigationLinks}"/>
 
             </StackPanel>
-            
+
+            <!-- Main search box in top column -->
+            <TextBox Width="450"
+                     Height="40"
+                     VerticalContentAlignment="Center"
+                     HorizontalAlignment="Left"
+                     Margin="5"
+                     Grid.Column="1"
+                     Style="{StaticResource SearchBar}"/>
+
+            <ContentControl Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="10"/>
         </Grid>
 
     </Border>
