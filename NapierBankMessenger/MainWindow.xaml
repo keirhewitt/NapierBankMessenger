@@ -26,6 +26,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="400"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
@@ -66,7 +67,7 @@
             </StackPanel>
 
             <!-- Main search box in top column -->
-            <TextBox Width="450"
+            <TextBox Width="380"
                      Height="40"
                      VerticalContentAlignment="Center"
                      HorizontalAlignment="Left"
@@ -74,8 +75,18 @@
                      Grid.Column="1"
                      Style="{StaticResource SearchBar}"/>
 
+            <!-- Bottom middle section
+                400 width x 525 height
+            -->
             <ContentControl Grid.Row="1"
                             Grid.Column="1"
+                            Margin="10"/>
+
+            <!-- Bottom right section 
+                600 width x 525 height
+            -->
+            <ContentControl Grid.Row="1"
+                            Grid.Column="2"
                             Margin="10"/>
         </Grid>
 

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NapierBankMessenger.MVVM.Model
 {
@@ -18,9 +15,8 @@ namespace NapierBankMessenger.MVVM.Model
             _sender = sender;
         }
 
-        private void addMessage(string message)
-        {
-            
-        }
+        private void addMessage(Message msg) { _message_history.Add(msg); }
+        private string getSender() { return _sender; }
+        private string getID() { return _id; }
     }
 }
