@@ -12,7 +12,7 @@
                 <ResourceDictionary Source="Style/SearchBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
-            <DataTemplate DataType="{x:Type viewModel:BaseViewModel}">
+            <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
                 <view:HomePage/>
             </DataTemplate>
             

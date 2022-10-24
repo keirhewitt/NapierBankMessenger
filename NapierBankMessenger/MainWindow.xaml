@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierBankMessenger"
+        xmlns:viewModel="clr-namespace:NapierBankMessenger.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600" 
@@ -13,6 +14,10 @@
         ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewModel:HomeViewModel/>
+    </Window.DataContext>
 
     <Border CornerRadius="20">
         

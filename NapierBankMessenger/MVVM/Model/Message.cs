@@ -20,18 +20,21 @@ namespace NapierBankMessenger.MVVM.Model
 
         private string _id; // "S", "E" or "T"
         private string _header; // _id + 9 numeric chars
-        private string _body; // Text content of the message
+        private string _body_subject; // Subject of the message
+        private string _body_main; // Text content of the message
 
-        public Message(string id, string body)
+        public Message(string id, string body_subject, string body_main)
         {
             _id = id;
             _header = id + IDSelector.ToString("000000000");
-            _body = body;
+            _body_subject = body_subject;
+            _body_main = body_main;
             IDSelector += 1;
         }
 
         public string getID(){ return _id; }
         public string getHeader(){ return _header; }
-        public string getBody(){ return _body; }
+        public string getSubject(){ return _body_subject; }
+        public string getMainBody() { return _body_main; }
     }
 }
