@@ -16,7 +16,7 @@
         AllowsTransparency="True">
 
     <Window.DataContext>
-        <viewModel:HomeViewModel/>
+        <viewModel:ViewModelController/>
     </Window.DataContext>
 
     <Border CornerRadius="20">
@@ -85,7 +85,7 @@
             -->
             <ContentControl Grid.Row="1"
                             Grid.Column="1"
-                            Margin="10"/>
+                            Content="{Binding MessageView}"/>
 
             <!-- Bottom right section 
                 600 width x 525 height
