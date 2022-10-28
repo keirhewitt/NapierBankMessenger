@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NapierBankMessenger"
         xmlns:viewModel="clr-namespace:NapierBankMessenger.MVVM.ViewModel"
+        xmlns:views="clr-namespace:NapierBankMessenger.MVVM.View"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600" 
@@ -15,16 +16,21 @@
         Background="Transparent"
         AllowsTransparency="True">
 
-    <Window.DataContext>
-        <viewModel:ViewModelController/>
-    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate x:Name="MessageList" DataType="{x:Type viewModel:ViewModelController}">
+            <views:HomePage DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="InputPage" DataType="{x:Type viewModel:InputParserModel}">
+            <views:InputParser DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.Resources>
 
     <Border CornerRadius="20">
         
         <Border.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
-                <GradientStop Color="#FF003E0C" Offset="0.0" />
-                <GradientStop Color="#FF2DC352" Offset="1" />
+                <GradientStop Color="#FF9586AF" Offset="0.0" />
+                <GradientStop Color="#FF51845E" Offset="1" />
             </LinearGradientBrush>
         </Border.Background>
         
