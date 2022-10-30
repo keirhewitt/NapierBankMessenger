@@ -11,7 +11,7 @@ namespace NapierBankMessenger.MVVM.Model
 
         public void validateMessage(Message message)
         {
-
+            
         }
 
         public void sanitizeMessage(Message message)

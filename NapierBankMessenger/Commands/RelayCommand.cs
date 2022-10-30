@@ -5,29 +5,23 @@ namespace NapierBankMessenger.Commands
 {
     internal class RelayCommand : ICommand
     {
-        private Action<object> _execute;
-        private Func<object, bool> _canExecute;
+        private Action _execute;
+        public event EventHandler CanExecuteChanged = (sender, e) => { };
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Action execute)
         {
             _execute = execute;
-            _canExecute = canExecute;
         }
 
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value;  }
-        }
 
         public bool CanExecute(object param)
         {
-            return _canExecute == null || _canExecute(param);
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            _execute();
         }
     }
 }

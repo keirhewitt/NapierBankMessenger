@@ -16,14 +16,17 @@
         Background="Transparent"
         AllowsTransparency="True">
 
-    <Window.Resources>
+    <!--<Window.Resources>
         <DataTemplate x:Name="MessageList" DataType="{x:Type viewModel:ViewModelController}">
-            <views:HomePage DataContext="{Binding}"/>
+            <views:MessagePage DataContext="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Name="InputPage" DataType="{x:Type viewModel:InputParserModel}">
             <views:InputParser DataContext="{Binding}"/>
         </DataTemplate>
-    </Window.Resources>
+    </Window.Resources>-->
+    <Window.DataContext>
+        <viewModel:ViewModelController/>
+    </Window.DataContext>
 
     <Border CornerRadius="20">
         
@@ -89,16 +92,20 @@
             <!-- Bottom middle section
                 400 width x 525 height
             -->
-            <ContentControl Grid.Row="1"
-                            Grid.Column="1"
-                            Content="{Binding MessageView}"/>
+            <ContentControl 
+                Grid.Row="1"                       
+                Grid.Column="1"            
+                Content="{Binding MessageView}"/>
+
 
             <!-- Bottom right section 
                 600 width x 525 height
             -->
-            <ContentControl Grid.Row="1"
-                            Grid.Column="2"
-                            Margin="10"/>
+            <ContentControl 
+                Grid.Row="1"
+                Grid.Column="2"
+                Content="{Binding ParserView}"/>
+            
         </Grid>
 
     </Border>

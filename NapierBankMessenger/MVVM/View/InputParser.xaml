@@ -4,73 +4,128 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NapierBankMessenger.MVVM.View"
+             xmlns:viewModel="clr-namespace:NapierBankMessenger.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewModel:ViewModelController}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="#FAFAFA">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="225"/>
-            <RowDefinition/>
-            <RowDefinition Height="200"/>
-        </Grid.RowDefinitions>
+    <Border CornerRadius="20">
+        <Grid Background="#FAFAFA">
 
-        <StackPanel Grid.Row="0">
-            
-            <!-- Header Label -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition />
+                <RowDefinition Height="40"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+     
+
+            <!-- Sender Label -->
             <Label 
-                Content="Header"
+                Content="Sender"
                 Grid.Row="0"
+                Grid.Column="0"
                 HorizontalContentAlignment="Center"
-                Margin="225,20,450,0"
-                MinWidth="100"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,0"
+                MinWidth="150"
                 Background="#FFA2ECAD"
-                Opacity="0.3"
+                Opacity="0.5"
                 FontWeight="Black" />
-            
-            <!-- Header text box -->
-            <TextBox 
-                Width="350" 
-                Height="30" 
-                VerticalContentAlignment="Center"
-                HorizontalContentAlignment="Left"
-                Margin="20,0,20,0" 
-                Background="WhiteSmoke"/>
 
+            <!-- Sender text box -->
+            <TextBox 
+                x:Name="textSender"
+                Height="Auto" 
+                Grid.Row="0"
+                Grid.Column="1"
+                BorderBrush="#FFA2ECAD"
+                HorizontalContentAlignment="Left"
+                Margin="0,0,0,0" 
+                Background="#FFBFBFBF"
+                FontSize="20"
+                Text="{Binding _sender}"/>
+
+            <!-- Subject Label -->
+            <Label 
+                Content="Subject"
+                Grid.Row="1"
+                Grid.Column="0"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,0"
+                MinWidth="150"
+                Background="#FFA2C8EC"
+                Opacity="0.5"
+                FontWeight="Black" />
+
+            <!-- Subject text box -->
+            <TextBox 
+                x:Name="textSubject"
+                Width="Auto" 
+                Height="Auto" 
+                Grid.Row="1"
+                Grid.Column="1"
+                BorderBrush="#FFA2C8EC"
+                HorizontalContentAlignment="Left"
+                Margin="0,0,0,0" 
+                Background="#FFBFBFBF"
+                FontSize="20"
+                Text="{Binding _subject}"/>
+
+            <!-- Body Text box Label -->
             <Label 
                 Content="Body"
-                Grid.Row="0"
+                Grid.Row="2"
+                Grid.Column="0"
                 HorizontalContentAlignment="Center"
-                Margin="225,20,450,0"
-                MinWidth="100"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,0"
+                MinWidth="150"
                 Background="#FFE49E9E"
-                Opacity="0.3"
+                Opacity="0.5"
                 FontWeight="Black" />
+                
+            <!-- Body Text Box -->
+            <TextBox
+                x:Name="textBody"
+                Width="Auto"
+                Grid.Row="2"
+                Grid.Column="1"
+                BorderBrush="#FFE49E9E"
+                Margin="0,0,0,0"
+                Background="#FFBFBFBF"
+                FontSize="20"
+                Text="{Binding _body}"/>
+
             
+
+            <!-- Parse Button -->
+            <Button 
+                x:Name="parseButton" 
+                Grid.Row="3"
+                Grid.Column="1"
+                Width="100" 
+                Height="25" 
+                VerticalContentAlignment="Center" 
+                HorizontalContentAlignment="Center"
+                Content="Parse"
+                BorderThickness="2"
+                Command="{Binding ParseDataButton}"/>
+
             <TextBlock
-                Width="350" 
-                Height="80" 
-                Margin="20,0,20,50"
-                Background="WhiteSmoke"/>
+                x:Name="textOutput"
+                Margin="20"
+                Background="#FFBFBFBF" 
+                Grid.Row="4"
+                Grid.Column="1"
+                Opacity="0.7"
+                Text="{Binding _output}"/>
 
-        </StackPanel>
-
-        <Button 
-            x:Name="Parse" 
-            Grid.Row="1" 
-            Width="100" 
-            Height="25" 
-            VerticalContentAlignment="Center" 
-            HorizontalContentAlignment="Center"
-            Content="Parse"
-            BorderThickness="2"/>
-
-        <TextBlock
-            Width="450"
-            Height="150"
-            Margin="20"
-            Background="WhiteSmoke" 
-            Grid.Row="2"
-            Opacity="0.7"/>
-
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

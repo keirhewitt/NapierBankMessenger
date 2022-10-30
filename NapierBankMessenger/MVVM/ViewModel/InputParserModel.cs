@@ -1,12 +1,16 @@
 ﻿
+using NapierBankMessenger.Commands;
 using NapierBankMessenger.MVVM.View;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
-    public class InputParserModel : ScriptableObject
+    public class InputParserModel : ViewModelController
     {
         public InputParser InputParserView { get; }
         public object _ipView;
+       
 
         public object View
         {
@@ -23,5 +27,6 @@ namespace NapierBankMessenger.MVVM.ViewModel
             InputParserView = new InputParser();
             View = _ipView;
         }
+
     }
 }

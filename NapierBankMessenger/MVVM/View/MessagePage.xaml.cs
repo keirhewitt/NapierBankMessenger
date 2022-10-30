@@ -5,10 +5,10 @@ using System.Windows.Controls;
 namespace NapierBankMessenger.MVVM.View
 {
 
-    public partial class HomePage : UserControl
+    public partial class MessagePage : UserControl
     {
 
-        public HomePage()
+        public MessagePage()
         {
             InitializeComponent();
             DataContext = new Controller();
