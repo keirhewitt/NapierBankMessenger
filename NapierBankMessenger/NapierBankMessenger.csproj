@@ -85,6 +85,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Style\MessageListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Style\NavigationLinks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -99,6 +103,7 @@
     <Compile Include="MVVM\Model\Message.cs" />
     <Compile Include="MVVM\Model\SIR.cs" />
     <Compile Include="MVVM\ViewModel\InputParserModel.cs" />
+    <Compile Include="MVVM\ViewModel\MessagePageController.cs" />
     <Compile Include="MVVM\ViewModel\ViewModelController.cs" />
     <Compile Include="Commands\ScriptableObject.cs" />
     <Compile Include="MVVM\View\InputParser.xaml.cs">

@@ -48,6 +48,50 @@
                 <RowDefinition Height="75"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+
+            <StackPanel 
+                Grid.Row="0" 
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Width="150"
+                Height="50"
+                Margin="15"
+                Orientation="Horizontal">
+
+                <Button 
+                    Width="45" 
+                    Height="45"
+                    Background="Transparent"
+                    Content="_"
+                    BorderThickness="0"
+                    Foreground="DimGray"
+                    FontWeight="Bold"
+                    FontSize="25" Click="ButtonMinimise"/>
+
+                <Button 
+                    Width="45" 
+                    Height="50"
+                    Background="Transparent"
+                    Content="⛶"
+                    BorderThickness="0"
+                    Foreground="DimGray"
+                    FontWeight="Bold"
+                    FontSize="35" Click="ButtonMaximise"/>
+
+                <Button 
+                    Width="45" 
+                    Height="45"
+                    Background="Transparent"
+                    Content="❌"
+                    BorderThickness="0"
+                    Foreground="DimGray"
+                    FontWeight="Bold"
+                    FontSize="25" 
+                    HorizontalAlignment="Center" 
+                    Click="ButtonExit"/>
+
+            </StackPanel>
         
             <!-- Page title Top Left -->
             <TextBlock Text="Napier Bank"

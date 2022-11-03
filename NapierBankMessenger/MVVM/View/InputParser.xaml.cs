@@ -24,5 +24,6 @@ namespace NapierBankMessenger.MVVM.View
         {
             InitializeComponent();
         }
+
     }
 }

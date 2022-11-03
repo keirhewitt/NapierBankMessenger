@@ -18,29 +18,29 @@ namespace NapierBankMessenger.MVVM.Model
     {
         public static int IDSelector = 1;
 
-        private string _id; // "S", "E" or "T"
-        private string _header; // _id + 9 numeric chars
-        private string _sender; // Sender i.e. phone number, email, twitter ID
-        private string _body_subject; // Subject of the message
-        private string _body_main; // Text content of the message
+        public string ID { get; set; } // "S", "E" or "T"
+        public string Header { get; set; } // _id + 9 numeric chars
+        public string Sender { get; set; } // Sender i.e. phone number, email, twitter ID
+        public string Subject { get; set; } // Subject of the message
+        public string Body { get; set; } // Text content of the message
 
         /**
          *  Default param for subject since this will only be overwritten for Email messages
          */
-        public Message(string id, string sender, string body_main, string subject="")
+        public Message(string id, string sender, string body, string subject="")
         {
-            _id = id;
-            _header = id + IDSelector.ToString("000000000");
-            _sender = sender;
-            _body_main = body_main;
-            _body_subject = subject;
+            ID = id;
+            Header = id + IDSelector.ToString("000000000");
+            Sender = sender;
+            Subject = subject;
+            Body = body;
             IDSelector += 1;
         }
 
-        public string getID(){ return _id; }
-        public string getHeader(){ return _header; }
-        public string getSender(){ return _sender; }
-        public string getSubject(){ return _body_subject; }
-        public string getMainBody() { return _body_main; }
+        /*public string getID(){ return ID; }
+        public string getHeader(){ return Header; }
+        public string getSender(){ return Sender; }
+        public string getSubject(){ return Subject; }
+        public string getMainBody() { return Body; }*/
     }
 }

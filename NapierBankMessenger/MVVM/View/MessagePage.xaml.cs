@@ -1,6 +1,6 @@
-﻿using System;
-using NapierBankMessenger.MVVM.Model;
+﻿
 using System.Windows.Controls;
+using NapierBankMessenger.MVVM.ViewModel;
 
 namespace NapierBankMessenger.MVVM.View
 {
@@ -11,7 +11,7 @@ namespace NapierBankMessenger.MVVM.View
         public MessagePage()
         {
             InitializeComponent();
-            DataContext = new Controller();
+            DataContext = new MessagePageController();
         }
     }
 }

@@ -48,7 +48,7 @@
                 Margin="0,0,0,0" 
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding _sender}"/>
+                Text="{Binding Sender}"/>
 
             <!-- Subject Label -->
             <Label 
@@ -75,7 +75,8 @@
                 Margin="0,0,0,0" 
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding _subject}"/>
+                Text="{Binding Subject}"
+                IsEnabled="{Binding Path=IsEmail, Mode=TwoWay}"/>
 
             <!-- Body Text box Label -->
             <Label 
@@ -100,7 +101,7 @@
                 Margin="0,0,0,0"
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding _body}"/>
+                Text="{Binding Body}"/>
 
             
 
@@ -124,7 +125,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Opacity="0.7"
-                Text="{Binding _output}"/>
+                Text="{Binding Output}"/>
 
         </Grid>
     </Border>

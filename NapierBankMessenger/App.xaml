@@ -11,6 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style/NavigationLinks.xaml"/>
                 <ResourceDictionary Source="Style/SearchBar.xaml"/>
+                <ResourceDictionary Source="Style/MessageListItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
