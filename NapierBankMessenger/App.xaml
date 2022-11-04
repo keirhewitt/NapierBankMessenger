@@ -1,13 +1,23 @@
-﻿<Application x:Class="NapierBankMessenger.App"
+﻿<Application x:Name="App" 
+             x:Class="NapierBankMessenger.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NapierBankMessenger"
              xmlns:viewModels="clr-namespace:NapierBankMessenger.MVVM.ViewModel"
-             xmlns:views="clr-namespace:NapierBankMessenger.MVVM.View"
-             StartupUri="MainWindow.xaml">
+             xmlns:views="clr-namespace:NapierBankMessenger.MVVM.View">
     <Application.Resources>
-
         <ResourceDictionary>
+            <Style x:Key="RoosterFont" TargetType="Label">
+                <Setter 
+                    Property="FontFamily"
+                    Value="Style/Fonts/RoosterPersonalUse-3z8d8.ttf #ROOSTER PERSONAL USE" />
+            </Style>
+            <Style x:Key="CopenhagenFont" TargetType="Label">
+                <Setter 
+                    Property="FontFamily"
+                    Value="Style/Fonts/Copenhagen-z3Z0.ttf #Copenhagen" />
+            </Style>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style/NavigationLinks.xaml"/>
                 <ResourceDictionary Source="Style/SearchBar.xaml"/>

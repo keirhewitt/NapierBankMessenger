@@ -7,7 +7,20 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Background="AntiqueWhite">
+        <!-- Message List Header -->
+        <Label 
+            HorizontalContentAlignment="Left"
+            FontSize="20"
+            Height="40"
+            FontWeight="Bold"
+            Background="Lavender">
+            <TextBlock 
+                Text="{Binding MessageListHeader}"
+                Margin="10,0,0,0"/>
+        </Label>
+        
         <Border>
+            
             <ListView 
                 ItemsSource="{Binding Messages}"
                 ItemContainerStyle="{StaticResource MessageListItem}">

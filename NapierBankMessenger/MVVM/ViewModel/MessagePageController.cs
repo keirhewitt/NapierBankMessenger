@@ -6,6 +6,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
     public class MessagePageController : ScriptableObject
     {
         public ObservableCollection<Message> Messages { get; set; }
+        public string MessageListHeader { get { return "Messages"; } }
 
         public MessagePageController()
         {

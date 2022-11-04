@@ -2,9 +2,8 @@
 using NapierBankMessenger.MVVM.View;
 using NapierBankMessenger.MVVM.Model;
 using System.Windows.Input;
-using System.Diagnostics;
 using NapierBankMessenger.Commands;
-using System.Collections.ObjectModel;
+using System.Drawing.Text;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
@@ -13,7 +12,9 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public MessagePage _msgPage { get; }
         public InputParser _inputPage { get; }
         public Controller _controller;
-
+        
+        private readonly string _title = "Napier Bank";
+        /*
         private readonly string[] email_format_sequences = { "@hotmail.com", "@gmail.com", "@live.napier.ac.uk" };
         public bool _isEmail = false;
 
@@ -21,12 +22,13 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public string _subject { get; set; }
         public string _body { get; set; }
         public string _output { get; set; }
-
+        */
         private object _parserView;
         private object _messageListView;
 
         public ICommand ParseDataButton { get; private set; }
 
+        /*
         public bool IsEmail
         {
             get { return _isEmail; }
@@ -74,7 +76,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
         {
             get { return _output; }
             set { _output = value; OnPropertyChanged(); }
-        }
+        } */
 
         public object ParserView
         {
@@ -96,6 +98,11 @@ namespace NapierBankMessenger.MVVM.ViewModel
             }
         }
 
+        public string MainTitle
+        {
+            get { return _title; }
+        }
+
         public ViewModelController()
         {
             _msgPage = new MessagePage();
@@ -112,6 +119,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
         {
         }
 
+        /*
         private bool CheckForEmail(string sender_text)
         {
             for (int i = 0; i < email_format_sequences.Length; i++)
@@ -125,7 +133,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
                 }
             }
             return false;
-        }
+        }*/
 
 
     }

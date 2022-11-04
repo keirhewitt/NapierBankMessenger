@@ -7,22 +7,23 @@
                 <Setter Property="BorderThickness" Value="2" />
             </Trigger>
         </Style.Triggers>
-        <Setter Property="Background" Value="DarkKhaki" />
+        <Setter Property="Background" Value="#FF8CAFB3" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
                     <Border 
                         Background="{TemplateBinding Background}"
                         MinHeight="70"
-                        Margin="1">
+                        Margin="0,0,0,1">
+                        
+                        <!-- Vertical stack panel for displaying Header above Body attributes of Message -->
                         <StackPanel 
-                            Orientation="Vertical"
-                            Margin="2">
+                            Orientation="Vertical">
 
                             <Border Background="DarkGray" />
                             <StackPanel>
-                                <Label Content="{Binding Header}" Foreground="#FAFAFA" FontWeight="Bold" />
-                                <Label Content="{Binding Body}" Foreground="#FAFAFA" />
+                                <Label Content="{Binding Sender}" Foreground="#FF0057B7" FontWeight="Bold" />
+                                <Label Content="{Binding Body}" Foreground="#FF000E5A" />
                             </StackPanel>
 
                         </StackPanel>
