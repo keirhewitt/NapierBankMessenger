@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NapierBankMessenger.MVVM.View"
-             xmlns:viewModel="clr-namespace:NapierBankMessenger.MVVM.ViewModel" d:DataContext="{d:DesignInstance Type=viewModel:ViewModelController}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -30,8 +29,8 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
                 HorizontalAlignment="Left"
-                Margin="0,0,0,0"
                 MinWidth="150"
                 Background="#FFA2ECAD"
                 Opacity="0.5"
@@ -45,10 +44,9 @@
                 Grid.Column="1"
                 BorderBrush="#FFA2ECAD"
                 HorizontalContentAlignment="Left"
-                Margin="0,0,0,0" 
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding Sender}"/>
+                Text="{Binding Sender, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Subject Label -->
             <Label 
@@ -56,8 +54,8 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
                 HorizontalAlignment="Left"
-                Margin="0,0,0,0"
                 MinWidth="150"
                 Background="#FFA2C8EC"
                 Opacity="0.5"
@@ -72,11 +70,10 @@
                 Grid.Column="1"
                 BorderBrush="#FFA2C8EC"
                 HorizontalContentAlignment="Left"
-                Margin="0,0,0,0" 
                 Background="#FFBFBFBF"
                 FontSize="20"
                 Text="{Binding Subject}"
-                IsEnabled="{Binding Path=IsEmail, Mode=TwoWay}"/>
+                IsEnabled="{Binding SubjectLineDisabled}" />
 
             <!-- Body Text box Label -->
             <Label 
@@ -84,8 +81,8 @@
                 Grid.Row="2"
                 Grid.Column="0"
                 HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
                 HorizontalAlignment="Left"
-                Margin="0,0,0,0"
                 MinWidth="150"
                 Background="#FFE49E9E"
                 Opacity="0.5"
@@ -98,7 +95,6 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 BorderBrush="#FFE49E9E"
-                Margin="0,0,0,0"
                 Background="#FFBFBFBF"
                 FontSize="20"
                 Text="{Binding Body}"/>
@@ -118,9 +114,21 @@
                 BorderThickness="2"
                 Command="{Binding ParseDataButton}"/>
 
+            <!-- Output Label -->
+            <Label 
+                Content="Output"
+                Grid.Row="4"
+                Grid.Column="0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalAlignment="Left"
+                MinWidth="150"
+                Background="#FFE1E869"
+                Opacity="0.5"
+                FontWeight="Black" />
+
             <TextBlock
                 x:Name="textOutput"
-                Margin="20"
                 Background="#FFBFBFBF" 
                 Grid.Row="4"
                 Grid.Column="1"
