@@ -1,5 +1,7 @@
 ﻿
+using NapierBankMessenger.Commands;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
@@ -10,8 +12,9 @@ namespace NapierBankMessenger.MVVM.ViewModel
         private string _sender;
         private string _subject;
         private string _body;
+        private bool subjectRequired = true;
 
-        public bool subjectRequired = true;
+        public ICommand ParseDataButton { get; private set; }
 
         // Binded to Subject Text Box - Field linked with "IsEnabled"
         public bool SubjectLineDisabled
@@ -25,7 +28,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
             set
             {
                 _sender = value;
-                // Sender line is in Email format, enable Subject Box
+                // IF Sender line is in Email format, enable Subject Box
                 if (CheckForEmail(_sender))
                 {
                     subjectRequired = true;
@@ -62,10 +65,10 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
         public InputParserModel()
         {
-            
+            ParseDataButton = new RelayCommand(ParseData, ReadyToParseData);
         }
 
-        private void OnTargetUpdate(object sender, DataTransferEventArgs args)
+        private void RaiseInputError(string error)
         {
 
         }
@@ -78,6 +81,24 @@ namespace NapierBankMessenger.MVVM.ViewModel
                     return true;
             }
             return false;
+        }
+
+        private bool ReadyToParseData(object data)
+        {
+            if (subjectRequired)
+            {
+                if (!string.IsNullOrEmpty(Subject))
+                {
+
+                }
+            }
+
+            return true;
+        }
+
+        private void ParseData(object data)
+        {
+            // ...
         }
 
     }

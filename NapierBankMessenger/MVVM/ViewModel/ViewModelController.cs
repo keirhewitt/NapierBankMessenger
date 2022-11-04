@@ -24,9 +24,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public string _output { get; set; }
         */
         private object _parserView;
-        private object _messageListView;
-
-        public ICommand ParseDataButton { get; private set; }
+        private object _messageListView;  
 
         /*
         public bool IsEmail
@@ -110,13 +108,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
             _controller = new Controller();
             
             MessageView = _msgPage;
-            ParserView = _inputPage;
-            
-            ParseDataButton = new RelayCommand(ParseData);
-        }
-
-        private void ParseData()
-        {
+            ParserView = _inputPage;          
         }
 
         /*

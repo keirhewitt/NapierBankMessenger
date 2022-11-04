@@ -5,23 +5,33 @@ namespace NapierBankMessenger.Commands
 {
     internal class RelayCommand : ICommand
     {
-        private Action _execute;
-        public event EventHandler CanExecuteChanged = (sender, e) => { };
+        private Action<object> _execute;
+        private Predicate<object> _canExecute;
 
-        public RelayCommand(Action execute)
+        public event EventHandler CanExecuteChanged
         {
-            _execute = execute;
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
+        // Constructor that takes a predicate to determine whether the Action `execute` can run
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        {
+            if (execute == null) throw new ArgumentNullException(nameof(execute));
+            _execute = execute;
+            _canExecute = canExecute;
+        }
 
         public bool CanExecute(object param)
         {
-            return true;
+            if (_canExecute == null)
+                return true;
+            return _canExecute(param);
         }
 
-        public void Execute(object parameter)
+        public void Execute(object param)
         {
-            _execute();
+            _execute.Invoke(param);
         }
     }
 }

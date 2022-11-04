@@ -13,7 +13,6 @@ namespace NapierBankMessenger
         {
             InitializeComponent();
             this.DataContext = new ViewModelController();
-
         }
 
         // Exit program

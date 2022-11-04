@@ -12,9 +12,7 @@ namespace NapierBankMessenger.MVVM.View
         public InputParser()
         {
             InitializeComponent();
-            Debug.Write("Initialising InputParseModel.");
             DataContext = new InputParserModel();
         }
-
     }
 }

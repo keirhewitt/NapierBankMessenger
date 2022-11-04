@@ -23,7 +23,11 @@
             
             <ListView 
                 ItemsSource="{Binding Messages}"
-                ItemContainerStyle="{StaticResource MessageListItem}">
+                ItemContainerStyle="{StaticResource MessageListItem}"
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                ScrollViewer.CanContentScroll="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                MaxHeight="485">
                 
             </ListView>
         </Border>
