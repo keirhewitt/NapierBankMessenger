@@ -21,7 +21,6 @@
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-     
 
             <!-- Sender Label -->
             <Label 
@@ -37,8 +36,8 @@
                 FontWeight="Black" />
 
             <!-- Sender text box -->
+            <!-- Sender will prompt invalid for empty field -->
             <TextBox 
-                x:Name="textSender"
                 Height="Auto" 
                 Grid.Row="0"
                 Grid.Column="1"
@@ -46,7 +45,9 @@
                 HorizontalContentAlignment="Left"
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding Sender, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding Sender, ValidatesOnDataErrors=True,
+                UpdateSourceTrigger=PropertyChanged}"
+                ToolTip="{Binding InputErrors[Sender]}"/>
 
             <!-- Subject Label -->
             <Label 
@@ -72,8 +73,10 @@
                 HorizontalContentAlignment="Left"
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding Subject}"
-                IsEnabled="{Binding SubjectLineDisabled}" />
+                Text="{Binding Subject, ValidatesOnDataErrors=True,
+                UpdateSourceTrigger=PropertyChanged}"
+                IsEnabled="{Binding SubjectLineDisabled}"
+                ToolTip="{Binding InputErrors[Subject]}"/>
 
             <!-- Body Text box Label -->
             <Label 
@@ -98,8 +101,6 @@
                 Background="#FFBFBFBF"
                 FontSize="20"
                 Text="{Binding Body}"/>
-
-            
 
             <!-- Parse Button -->
             <Button 

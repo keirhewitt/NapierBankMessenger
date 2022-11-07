@@ -1,4 +1,4 @@
-﻿
+﻿using System.Text.Json;
 using System.Collections.Generic;
 
 namespace NapierBankMessenger.MVVM.Model
@@ -9,35 +9,35 @@ namespace NapierBankMessenger.MVVM.Model
         private List<SIR> _SIRs { get; set; }
         public Message[] Messages { get; set; }
 
-        public void validateMessage(Message message)
+        public void ValidateMessage(Message message)
         {
             
         }
 
-        public void sanitizeMessage(Message message)
+        public void SanitizeMessage(Message message)
         {
 
         }
 
-        public void categorizeMessage(Message message)
+        public void CategorizeMessage(Message message)
         {
 
         }
 
-        public void sendMessageToJSON(Message message)
+        public void SendMessageToJSON(Message message)
         {
 
         }
 
-        public void loadMessagesFromJSON()
+        public void LoadMessagesFromJSON()
         {
 
         }
 
-        public void addMessage(Message message) {  _messages.Add(message); }
-        public void removeMessage(Message message) { _messages.Remove(message); }
-        public void addSIR(SIR sir) { _SIRs.Add(sir); }
-        public void removeSIR(SIR sir) { _SIRs.Remove(sir); }
+        public void AddMessage(Message message) {  _messages.Add(message); }
+        public void RemoveMessage(Message message) { _messages.Remove(message); }
+        public void AddSIR(SIR sir) { _SIRs.Add(sir); }
+        public void RemoveSIR(SIR sir) { _SIRs.Remove(sir); }
 
         public List<Message> getMessages() { return _messages; }
         public List<SIR> getSIRs() { return _SIRs; }

@@ -59,7 +59,8 @@
                     BorderThickness="0"
                     Foreground="DimGray"
                     FontWeight="Bold"
-                    FontSize="25" Click="ButtonMinimise"/>
+                    FontSize="25" 
+                    Click="ButtonMinimise"/>
 
                 <Button 
                     Width="45" 

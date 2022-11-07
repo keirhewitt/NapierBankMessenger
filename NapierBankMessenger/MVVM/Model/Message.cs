@@ -1,4 +1,5 @@
 ﻿
+
 namespace NapierBankMessenger.MVVM.Model
 {
     /**

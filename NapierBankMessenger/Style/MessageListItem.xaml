@@ -23,9 +23,10 @@
                             <Border Background="DarkGray" />
                             <StackPanel>
                                 <Label>
+                                    <!-- Bind to Message property and trail messages that are too long -->
                                     <TextBlock 
                                         Text="{Binding Sender}" 
-                                        TextTrimming="CharacterEllipsis" 
+                                        TextTrimming="CharacterEllipsis"
                                         Foreground="#FF0057B7" 
                                         FontWeight="Bold"
                                         MaxWidth="370"/>
@@ -33,7 +34,7 @@
                                 <Label>
                                     <TextBlock 
                                         Text="{Binding Body}"
-                                        TextTrimming="WordEllipsis"
+                                        TextTrimming="CharacterEllipsis"
                                         Foreground="#FF000E5A"
                                         Margin="10,0,0,10"
                                         MaxWidth="370"
