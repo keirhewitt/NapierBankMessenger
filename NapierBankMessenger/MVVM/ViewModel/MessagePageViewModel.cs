@@ -3,15 +3,37 @@ using System.Collections.ObjectModel;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
-    public class MessagePageController : ScriptableObject
+    public class MessagePageViewModel : ScriptableObject
     {
-        public ObservableCollection<Message> Messages { get; set; }
-        public string MessageListHeader { get { return "Messages"; } }
+        private string MessageListHeader { get { return "Messages"; } }
+        private Controller _controller;
 
-        public MessagePageController()
+        public Controller Ctrl 
+        { 
+            get { return _controller; } 
+        }
+
+
+        public ObservableCollection<Message> Messages
         {
-            Messages = new ObservableCollection<Message>();
+            get => Ctrl.Messages;
+            set
+            {
+                Ctrl.Messages = value;
+                OnPropertyChanged("Messages");
+            }
+        }
+
+        public MessagePageViewModel(Controller ctrl)
+        {
+            _controller = ctrl;
             TestFunction();
+        }
+
+
+        private void AddMessage(Message message)
+        {
+            Messages.Add(message);
         }
 
         private void TestFunction()

@@ -1,19 +1,23 @@
 ﻿
 using NapierBankMessenger.Commands;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using NapierBankMessenger.MVVM.Model;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
-    public class InputParserModel : ScriptableObject, IDataErrorInfo
+    public class InputParserViewModel : ScriptableObject, IDataErrorInfo
     {
         private readonly string[] email_format_sequences = { "@hotmail.com", "@gmail.com", "@live.napier.ac.uk" };
+        private int[] _flags;
+        private Controller _controller;
 
         public Dictionary<string, string> InputErrors { get; private set; } = new Dictionary<string, string>();
+
+        //public MessagePageViewModel MessagePageViewModel { get; set; }
 
         private string _sender;
         private string _subject;
@@ -22,9 +26,23 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
         public ICommand ParseDataButton { get; private set; }
 
+
+        public Controller Ctrl
+        {
+            get { return _controller; }
+        }
+
         // Contains flags for each field --> 0: Phone, 1: Email, 2: Tweet
         // Int array of size: 3 (Sender, subject, body)
-        public int[] Flags { get; private set; }
+        public int[] Flags 
+        { 
+            get { return _flags; } 
+            private set
+            {
+                _flags = value;
+                OnPropertyChanged();
+            } 
+        }
 
         // Binded to Subject Text Box - Field linked with "IsEnabled"
         public bool SubjectLineDisabled
@@ -75,6 +93,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
         public string Error { get { return null; } }
 
+        // Return DataErrors specific to each field
         public string this[string field]
         {
             get
@@ -91,7 +110,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
                             fieldError = ValidateSubject(Subject);
                         break;
                     case "Body":
-                        // ... Create ValidateBody()
+                        fieldError = ValidateBody(Body);
                         break;
                 }
 
@@ -112,16 +131,11 @@ namespace NapierBankMessenger.MVVM.ViewModel
             }
         }
 
-
-        public InputParserModel()
+        public InputParserViewModel(Controller ctrl)
         {
+            _controller = ctrl;
             ParseDataButton = new RelayCommand(ParseData, ReadyToParseData);
             Flags = new int[3] { -1, -1 , -1 };
-        }
-
-        private void RaiseInputError(string error)
-        {
-
         }
 
         public bool CheckForEmail(string sender_line)
@@ -136,47 +150,43 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
         // Data validation for Input forms
         private bool ReadyToParseData(object data)
-        {   
+        {
             // Check if any of the Flags have been set to -1 (Error)
-            if (Flags.Any(i => i == -1))
-            {
-                return false;
-            }
-
-            return true;
+            return !Flags.Any(i => i == -1);
+           
         }
 
         private void ParseData(object data)
         {
-            // ...
-        }
-
-        private string ValidateSubject(string subject)
-        {
-            // If Sender is 1 (Email)
-            if (subject.Length > 20)
+            // SMS
+            if (Flags[0] == 0)
             {
-                Flags[1] = -1;
-                return "Subject must be a max of 20 characters.";
+                Message newSMS = new Message("S", Sender, Body);
+                Ctrl.AddMessage(newSMS);
+            }
+            else if (Flags[0] == 1)
+            {
+                Message newEmail = new Message("E", Sender, Body, Subject);
+                Ctrl.AddMessage(newEmail);
             }
             else
             {
-                Flags[1] = 1;
+                Message newTweet = new Message("T", Sender, Body, Subject);
+                Ctrl.AddMessage(newTweet);
             }
-            return "";
         }
 
         // Validate a Phone Number in the Sender Field
         private string ValidatePhoneNumber(string phoneNumber)
         {
             // String contains only numeric values
-            if (!phoneNumber.All(char.IsDigit))
+            if (!phoneNumber.All(char.IsDigit) && !phoneNumber.StartsWith("+"))
             {
                 Flags[0] = -1;
                 return "Phone number must contain only numeric characters.";
             }
 
-            if (Regex.IsMatch(phoneNumber, @"^\d")) // If string begins with numeric char
+            else if (Regex.IsMatch(phoneNumber, @"^\d")) // If string begins with numeric char
             {                
                 if (phoneNumber.Length > 12)
                 {
@@ -266,6 +276,89 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
             return "";
         }
+
+        // Validate the subject text field for each message type.
+        private string ValidateSubject(string subject)
+        {
+            // Only validate Subject field if Message type is Email
+            if (Flags[0] == 1)
+            {
+                // If Sender is 1 (Email)
+                if (subject.Length > 20)
+                {
+                    Flags[1] = -1;
+                    return "Subject must be a max of 20 characters.";
+                }
+                else
+                {
+                    Flags[1] = 1;
+                }
+            }
+            return "";
+        }
+
+        // Validate the body text field for each message type.
+        private string ValidateBody(string body)
+        {
+            // Check first for any empty body messages if Sender field is VALID
+            if (Flags[0] != -1 && string.IsNullOrWhiteSpace(body))
+            {
+                Flags[2] = -1;
+                return "Cannot submit empty message.";
+            }
+            // If Message is SMS
+            else if (Flags[0] == 0)
+            {
+                if (body.Length > 140)
+                {
+                    Flags[2] = -1;
+                    return "SMS message cannot be longer than 140 characters.";
+                }
+                else
+                {
+                    Flags[2] = 0;
+                }
+            }
+
+            // Email
+            else if (Flags[0] == 1)
+            {
+                if (body.Length > 1028)
+                {
+                    Flags[2] = -1;
+                    return "Email message cannot be longer than 1028 characters.";
+                }
+                else
+                {
+                    Flags[2] = 1;
+                }
+
+            }
+
+            // Tweet
+            else if (Flags[0] == 2)
+            {
+                if (body.Length > 140)
+                {
+                    Flags[2] = -1;
+                    return "Tweet cannot be longer than 140 characters.";
+                }
+                else
+                {
+                    Flags[2] = 2;
+                }
+
+            }
+
+            else
+            {
+                return "";
+            }
+
+
+            return "";
+        }
+
 
     }
 }

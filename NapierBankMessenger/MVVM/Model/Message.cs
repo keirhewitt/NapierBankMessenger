@@ -19,7 +19,7 @@ namespace NapierBankMessenger.MVVM.Model
     {
         public static int IDSelector = 1;
 
-        public string ID { get; set; } // "S", "E" or "T"
+        public string Type { get; set; } // "S", "E" or "T"
         public string Header { get; set; } // _id + 9 numeric chars
         public string Sender { get; set; } // Sender i.e. phone number, email, twitter ID
         public string Subject { get; set; } // Subject of the message
@@ -28,17 +28,23 @@ namespace NapierBankMessenger.MVVM.Model
         /**
          *  Default param for subject since this will only be overwritten for Email messages
          */
-        public Message(string id, string sender, string body, string subject="")
+        public Message(string type, string sender, string body, string subject="")
         {
-            ID = id;
-            Header = id + IDSelector.ToString("000000000");
+            Type = type;
+            Header = type + IDSelector.ToString("000000000");
             Sender = sender;
             Subject = subject;
             Body = body;
             IDSelector += 1;
         }
 
-        /*public string getID(){ return ID; }
+        // For searching for specific messages
+        public bool FindMatch(string searchQuery)
+        {
+            return Sender.Contains(searchQuery) || Subject.Contains(searchQuery) || Body.Contains(searchQuery);
+        }
+
+        /*public string getType(){ return type; }
         public string getHeader(){ return Header; }
         public string getSender(){ return Sender; }
         public string getSubject(){ return Subject; }

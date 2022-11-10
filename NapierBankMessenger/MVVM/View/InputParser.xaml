@@ -45,7 +45,7 @@
                 HorizontalContentAlignment="Left"
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding Sender, ValidatesOnDataErrors=True,
+                Text="{Binding Sender,ValidatesOnDataErrors=True,
                 UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="{Binding InputErrors[Sender]}"/>
 
@@ -64,7 +64,6 @@
 
             <!-- Subject text box -->
             <TextBox 
-                x:Name="textSubject"
                 Width="Auto" 
                 Height="Auto" 
                 Grid.Row="1"
@@ -73,7 +72,7 @@
                 HorizontalContentAlignment="Left"
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding Subject, ValidatesOnDataErrors=True,
+                Text="{Binding Subject,ValidatesOnDataErrors=True,
                 UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding SubjectLineDisabled}"
                 ToolTip="{Binding InputErrors[Subject]}"/>
@@ -93,14 +92,15 @@
                 
             <!-- Body Text Box -->
             <TextBox
-                x:Name="textBody"
                 Width="Auto"
                 Grid.Row="2"
                 Grid.Column="1"
                 BorderBrush="#FFE49E9E"
                 Background="#FFBFBFBF"
                 FontSize="20"
-                Text="{Binding Body}"/>
+                Text="{Binding Body,ValidatesOnDataErrors=True,
+                UpdateSourceTrigger=PropertyChanged}"
+                ToolTip="{Binding InputErrors[Body]}"/>
 
             <!-- Parse Button -->
             <Button 

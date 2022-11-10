@@ -1,4 +1,5 @@
-﻿using NapierBankMessenger.MVVM.ViewModel;
+﻿using NapierBankMessenger.MVVM.Model;
+using NapierBankMessenger.MVVM.ViewModel;
 using System.Diagnostics;
 using System.Windows.Controls;
 
@@ -9,10 +10,10 @@ namespace NapierBankMessenger.MVVM.View
     /// </summary>
     public partial class InputParser : UserControl
     {
-        public InputParser()
+        public InputParser(Controller ctrl)
         {
             InitializeComponent();
-            DataContext = new InputParserModel();
+            DataContext = new InputParserViewModel(ctrl);
         }
     }
 }

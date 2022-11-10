@@ -5,9 +5,9 @@ namespace NapierBankMessenger.MVVM.ViewModel
 {
     public class ViewModelController : ScriptableObject
     {
-        public MessagePage _msgPage { get; }
-        public InputParser _inputPage { get; }
-        public Controller _controller;
+        private MessagePage MsgPage { get; }
+        private InputParser InputPage { get; }
+        private Controller Ctrl { get; }
         
         private object _parserView;
         private object _messageListView;  
@@ -36,16 +36,14 @@ namespace NapierBankMessenger.MVVM.ViewModel
             }
         }
 
-
         public ViewModelController()
         {
-            _msgPage = new MessagePage();
-            _inputPage = new InputParser();
-            _controller = new Controller();
+            Ctrl = new Controller();
+            MsgPage = new MessagePage(Ctrl);
+            InputPage = new InputParser(Ctrl);
             
-            MessageView = _msgPage;
-            ParserView = _inputPage;          
+            MessageView = MsgPage;
+            ParserView = InputPage;          
         }
-
     }
 }

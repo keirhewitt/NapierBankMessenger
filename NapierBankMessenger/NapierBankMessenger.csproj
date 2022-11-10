@@ -133,8 +133,9 @@
     <Compile Include="MVVM\Model\Controller.cs" />
     <Compile Include="MVVM\Model\Message.cs" />
     <Compile Include="MVVM\Model\SIR.cs" />
-    <Compile Include="MVVM\ViewModel\InputParserModel.cs" />
-    <Compile Include="MVVM\ViewModel\MessagePageController.cs" />
+    <Compile Include="MVVM\ViewModel\InputParserViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\MessagePageViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\ParseMessageViewModel.cs" />
     <Compile Include="MVVM\ViewModel\ViewModelController.cs" />
     <Compile Include="Commands\ScriptableObject.cs" />
     <Compile Include="MVVM\View\InputParser.xaml.cs">
