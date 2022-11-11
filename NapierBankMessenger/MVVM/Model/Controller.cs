@@ -1,37 +1,30 @@
 ﻿using System.Text.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NapierBankMessenger.MVVM.ViewModel;
 
-namespace NapierBankMessenger.MVVM.Model
+namespace NapierBankMessenger.MVVM.Model 
 {
-    public class Controller
+    public class Controller : ScriptableObject
     {
         private ObservableCollection<Message> _messages;
-        private List<SIR> _SIRs { get; set; }
+        private ObservableCollection<SIR> _sirList;
+
+        public ObservableCollection<SIR> SIRs 
+        { 
+            get => _sirList;
+            set => _sirList = value; 
+        }
 
         public ObservableCollection<Message> Messages 
         { 
             get => _messages; 
+            set => _messages = value;
         }
 
         public Controller()
         {
             _messages = new ObservableCollection<Message>();
-        }
-
-        public void ValidateMessage(Message message)
-        {
-            
-        }
-
-        public void SanitizeMessage(Message message)
-        {
-
-        }
-
-        public void CategorizeMessage(Message message)
-        {
-
         }
 
         public void SendMessageToJSON(Message message)
@@ -46,8 +39,7 @@ namespace NapierBankMessenger.MVVM.Model
 
         public void AddMessage(Message message) {  _messages.Add(message); }
         public void RemoveMessage(Message message) { _messages.Remove(message); }
-        public void AddSIR(SIR sir) { _SIRs.Add(sir); }
-        public void RemoveSIR(SIR sir) { _SIRs.Remove(sir); }
-        public List<SIR> getSIRs() { return _SIRs; }
+        public void AddSIR(SIR sir) { _sirList.Add(sir); }
+        public void RemoveSIR(SIR sir) { _sirList.Remove(sir); }
     }
 }

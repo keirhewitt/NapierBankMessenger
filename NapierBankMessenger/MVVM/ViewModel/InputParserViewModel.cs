@@ -12,60 +12,51 @@ namespace NapierBankMessenger.MVVM.ViewModel
     public class InputParserViewModel : ScriptableObject, IDataErrorInfo
     {
         private readonly string[] email_format_sequences = { "@hotmail.com", "@gmail.com", "@live.napier.ac.uk" };
-        private int[] _flags;
-        private Controller _controller;
+        private readonly Controller _controller;
 
-        public Dictionary<string, string> InputErrors { get; private set; } = new Dictionary<string, string>();
-
-        //public MessagePageViewModel MessagePageViewModel { get; set; }
-
+        // Properties of the user entered message
         private string _sender;
         private string _subject;
         private string _body;
+
+        // Properties of the submitted message into the appropriate format
+        private string _output_sender;
+        private string _output_subject;
+        private string _output_body;
+        private string _output;
+
         private bool subjectRequired = false;
 
+        public Dictionary<string, string> InputErrors { get; private set; } = new Dictionary<string, string>();
         public ICommand ParseDataButton { get; private set; }
 
-
-        public Controller Ctrl
-        {
-            get { return _controller; }
-        }
+        public Controller Ctrl {  get => _controller; }
+        public DataValidationViewModel validationModel;
 
         // Contains flags for each field --> 0: Phone, 1: Email, 2: Tweet
+        // For Subject: 3 = Not Required, -1 = Validation Error
         // Int array of size: 3 (Sender, subject, body)
-        public int[] Flags 
-        { 
-            get { return _flags; } 
+        public Dictionary<string, int> Flags
+        {
+            get => validationModel.Flags;
             private set
             {
-                _flags = value;
+                validationModel.Flags = value;
                 OnPropertyChanged();
             } 
         }
 
         // Binded to Subject Text Box - Field linked with "IsEnabled"
-        public bool SubjectLineDisabled
-        {
-            get { return subjectRequired; }
-        }
+        public bool SubjectLineDisabled { get => subjectRequired; }
 
         public string Sender 
-        { 
-            get { return _sender; }
+        {
+            get => _sender;
             set
             {
                 _sender = value;
                 // IF Sender line is in Email format, enable Subject Box
-                if (CheckForEmail(_sender))
-                {
-                    subjectRequired = true;
-                }
-                else
-                {
-                    subjectRequired = false;
-                }
-
+                if (validationModel.CheckForEmail(_sender) ? subjectRequired = true : subjectRequired = false)
                 OnPropertyChanged();
                 OnPropertyChanged("SubjectLineDisabled");
             } 
@@ -73,25 +64,23 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
         public string Subject
         {
-            get { return _subject; }
-            set
-            {
-                _subject = value;
-                OnPropertyChanged();
-            }
+            get => _subject;
+            set { _subject = value; OnPropertyChanged(); }
         }
 
         public string Body
         {
-            get { return _body; }
-            set
-            {
-                _body = value;
-                OnPropertyChanged();
-            }
+            get => _body;
+            set { _body = value; OnPropertyChanged(); }
         }
 
-        public string Error { get { return null; } }
+        public string Output
+        {
+            get => _output;
+            set { _output = value; OnPropertyChanged(); }
+        }
+
+        public string Error { get => null; }
 
         // Return DataErrors specific to each field
         public string this[string field]
@@ -103,14 +92,14 @@ namespace NapierBankMessenger.MVVM.ViewModel
                 switch(field)
                 {
                     case "Sender":
-                        fieldError = ValidateSenderField(Sender);
+                        fieldError = validationModel.ValidateSenderField(Sender);
                         break;
                     case "Subject":
                         if (SubjectLineDisabled)
-                            fieldError = ValidateSubject(Subject);
+                            fieldError = validationModel.ValidateSubject(Subject);
                         break;
                     case "Body":
-                        fieldError = ValidateBody(Body);
+                        fieldError = validationModel.ValidateBody(Body);
                         break;
                 }
 
@@ -134,231 +123,37 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public InputParserViewModel(Controller ctrl)
         {
             _controller = ctrl;
-            ParseDataButton = new RelayCommand(ParseData, ReadyToParseData);
-            Flags = new int[3] { -1, -1 , -1 };
+            validationModel = new DataValidationViewModel();
+            ParseDataButton = new RelayCommand(ParseData, ParseCondition);
         }
 
-        public bool CheckForEmail(string sender_line)
+        // Checks if ready to submit message
+        private bool ParseCondition(object data)
         {
-            for (int i = 0; i < email_format_sequences.Length; i++)
-            {
-                if (sender_line.Contains(email_format_sequences[i]))
-                    return true;
-            }
-            return false;
+            return validationModel.ReadyToParseData();
         }
 
-        // Data validation for Input forms
-        private bool ReadyToParseData(object data)
-        {
-            // Check if any of the Flags have been set to -1 (Error)
-            return !Flags.Any(i => i == -1);
-           
-        }
-
+        // Determine message type and then create and add Message object with the relevant params
         private void ParseData(object data)
         {
             // SMS
-            if (Flags[0] == 0)
+            if (validationModel.GetMessageType() == "S")
             {
-                Message newSMS = new Message("S", Sender, Body);
-                Ctrl.AddMessage(newSMS);
+                Ctrl.AddMessage(new Message("S", Sender, Body));
             }
-            else if (Flags[0] == 1)
-            {
-                Message newEmail = new Message("E", Sender, Body, Subject);
-                Ctrl.AddMessage(newEmail);
-            }
-            else
-            {
-                Message newTweet = new Message("T", Sender, Body, Subject);
-                Ctrl.AddMessage(newTweet);
-            }
-        }
-
-        // Validate a Phone Number in the Sender Field
-        private string ValidatePhoneNumber(string phoneNumber)
-        {
-            // String contains only numeric values
-            if (!phoneNumber.All(char.IsDigit) && !phoneNumber.StartsWith("+"))
-            {
-                Flags[0] = -1;
-                return "Phone number must contain only numeric characters.";
-            }
-
-            else if (Regex.IsMatch(phoneNumber, @"^\d")) // If string begins with numeric char
-            {                
-                if (phoneNumber.Length > 12)
-                {
-                    Flags[0] = -1;
-                    return "Phone Number must be 12 characters long!";
-                }
-            }
-            else if (phoneNumber.StartsWith("+44")) // Deal with +44, add 2 digits on to max length
-            {
-                if (phoneNumber.Length > 14)
-                {
-                    Flags[0] = -1;
-                    return "Phone Number must be 12 characters long!";
-                }
-            }
-            // Set the Flag if no error
-            else
-            {
-                Flags[0] = 0;
-            }
-            return "";
-        }
-
-        // Validate an Email Address in the Sender Field
-        private string ValidateEmail(string emailaddress)
-        {
-            if (!CheckForEmail(emailaddress))
-            {
-                Flags[0] = -1;
-                return "Not a valid email address.";
-            }
-            else if (emailaddress.Length > 320)
-            {
-                Flags[0] = -1;
-                return "Invalid email address - too large!";
-            }
-            // Set the Flag if no error
-            else
-            {
-                Flags[0] = 1;
-            }
-            return "";
-        }
-
-        // Validate a Twitter ID in the Sender Field
-        private string ValidateTwitterID(string twitterID)
-        {
-            if (twitterID.Length > 16 || twitterID.Length < 4)
-            {
-                Flags[0] = -1;
-                return "Twitter ID must be between 4 and 16 characters.";    
-            }
-            // Set the Flag if no error
-            else
-            {
-                Flags[0] = 2;
-            }
-            return "";
-        }
-
-        // Ensure a correct Sender format, returns Error message as a tooltip when hovering over the Sender Text Box
-        private string ValidateSenderField(string sender)
-        {
-            // Initial Null or Empty check
-            if (string.IsNullOrWhiteSpace(Sender))
-            {
-                return "Sender field cannot be empty!";
-            }
-
-            // Phone Number
-            if (Regex.IsMatch(sender, @"^\d") || sender.StartsWith("+44"))
-            {
-                return ValidatePhoneNumber(sender);
-            }
-
-            // Email Address
-            else if (sender.Contains("@") && !sender.StartsWith("@")) // Contains `@` but does not start with `@` - twitter ID starts with this.
-            {
-                return ValidateEmail(sender);
-            }
-
-            // Twitter ID
-            else if (sender.StartsWith("@"))
-            {
-                return ValidateTwitterID(sender);
-            }
-
-            return "";
-        }
-
-        // Validate the subject text field for each message type.
-        private string ValidateSubject(string subject)
-        {
-            // Only validate Subject field if Message type is Email
-            if (Flags[0] == 1)
-            {
-                // If Sender is 1 (Email)
-                if (subject.Length > 20)
-                {
-                    Flags[1] = -1;
-                    return "Subject must be a max of 20 characters.";
-                }
-                else
-                {
-                    Flags[1] = 1;
-                }
-            }
-            return "";
-        }
-
-        // Validate the body text field for each message type.
-        private string ValidateBody(string body)
-        {
-            // Check first for any empty body messages if Sender field is VALID
-            if (Flags[0] != -1 && string.IsNullOrWhiteSpace(body))
-            {
-                Flags[2] = -1;
-                return "Cannot submit empty message.";
-            }
-            // If Message is SMS
-            else if (Flags[0] == 0)
-            {
-                if (body.Length > 140)
-                {
-                    Flags[2] = -1;
-                    return "SMS message cannot be longer than 140 characters.";
-                }
-                else
-                {
-                    Flags[2] = 0;
-                }
-            }
-
             // Email
-            else if (Flags[0] == 1)
+            else if (validationModel.GetMessageType() == "E")
             {
-                if (body.Length > 1028)
-                {
-                    Flags[2] = -1;
-                    return "Email message cannot be longer than 1028 characters.";
-                }
-                else
-                {
-                    Flags[2] = 1;
-                }
-
+                Ctrl.AddMessage(new Message("E", Sender, Body, Subject));
             }
-
             // Tweet
-            else if (Flags[0] == 2)
-            {
-                if (body.Length > 140)
-                {
-                    Flags[2] = -1;
-                    return "Tweet cannot be longer than 140 characters.";
-                }
-                else
-                {
-                    Flags[2] = 2;
-                }
-
-            }
-
             else
             {
-                return "";
+                Ctrl.AddMessage(new Message("T", Sender, Body, Subject));
             }
 
-
-            return "";
+            Output = Ctrl.Messages.Last().Sender + "\n" + Ctrl.Messages.Last().Subject + "\n" + Ctrl.Messages.Last().Body;
         }
-
 
     }
 }

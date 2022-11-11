@@ -43,6 +43,7 @@ namespace NapierBankMessenger.MVVM.Model
         {
             return Sender.Contains(searchQuery) || Subject.Contains(searchQuery) || Body.Contains(searchQuery);
         }
+        
 
         /*public string getType(){ return type; }
         public string getHeader(){ return Header; }

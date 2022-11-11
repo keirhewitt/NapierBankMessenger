@@ -34,6 +34,15 @@
                 Background="#FFA2ECAD"
                 Opacity="0.5"
                 FontWeight="Black" />
+            
+            <!-- Flag test -->
+            <Label 
+                Content="{Binding Flag1, UpdateSourceTrigger=PropertyChanged}"
+                Width="50"
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                FontWeight="Bold"/>
 
             <!-- Sender text box -->
             <!-- Sender will prompt invalid for empty field -->
@@ -61,6 +70,14 @@
                 Background="#FFA2C8EC"
                 Opacity="0.5"
                 FontWeight="Black" />
+            <!-- Flag test -->
+            <Label 
+                Content="{Binding Flag2, UpdateSourceTrigger=PropertyChanged}"
+                Width="50"
+                Grid.Row="1"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                FontWeight="Bold"/>
 
             <!-- Subject text box -->
             <TextBox 
@@ -89,7 +106,15 @@
                 Background="#FFE49E9E"
                 Opacity="0.5"
                 FontWeight="Black" />
-                
+            
+            <Label 
+                Content="{Binding Flag3, UpdateSourceTrigger=PropertyChanged}"
+                Width="50"
+                Grid.Row="2"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                FontWeight="Bold"/>
+            
             <!-- Body Text Box -->
             <TextBox
                 Width="Auto"
@@ -104,7 +129,6 @@
 
             <!-- Parse Button -->
             <Button 
-                x:Name="parseButton" 
                 Grid.Row="3"
                 Grid.Column="1"
                 Width="100" 
@@ -134,7 +158,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Opacity="0.7"
-                Text="{Binding Output}"/>
+                Text="{Binding Output,UpdateSourceTrigger=PropertyChanged}"/>
 
         </Grid>
     </Border>
