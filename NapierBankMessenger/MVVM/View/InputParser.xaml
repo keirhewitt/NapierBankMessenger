@@ -70,6 +70,7 @@
                 Background="#FFA2C8EC"
                 Opacity="0.5"
                 FontWeight="Black" />
+            
             <!-- Flag test -->
             <Label 
                 Content="{Binding Flag2, UpdateSourceTrigger=PropertyChanged}"

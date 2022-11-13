@@ -1,4 +1,5 @@
 ﻿
+using NapierBankMessenger.MVVM.FileIO;
 
 namespace NapierBankMessenger.MVVM.Model
 {
@@ -15,40 +16,58 @@ namespace NapierBankMessenger.MVVM.Model
      *                                 -- Extra -> Sort Code and Nature of Incident written to a SIR list
      *                                 -- Any URLS will be removed and written to a quarantine list and replaced with <`URL Quarantined> in the BODY
      */
-    public class Message
+    public abstract class Message
     {
         public static int IDSelector = 1;
 
-        public string Type { get; set; } // "S", "E" or "T"
-        public string Header { get; set; } // _id + 9 numeric chars
-        public string Sender { get; set; } // Sender i.e. phone number, email, twitter ID
-        public string Subject { get; set; } // Subject of the message
-        public string Body { get; set; } // Text content of the message
+        private readonly string type; // "S", "E" or "T"
+        private readonly string header; // _id + 9 numeric chars
+        private readonly string sender; // Sender i.e. phone number, email, twitter ID
+        private string body; // Text content of the message
 
         /**
          *  Default param for subject since this will only be overwritten for Email messages
          */
-        public Message(string type, string sender, string body, string subject="")
+        protected Message(string type, string sender, string body)
         {
-            Type = type;
-            Header = type + IDSelector.ToString("000000000");
-            Sender = sender;
-            Subject = subject;
-            Body = body;
+            this.type = type;
+            this.header = type + IDSelector.ToString("000000000");
+            this.sender = sender;
+            this.body = body;
             IDSelector += 1;
         }
 
-        // For searching for specific messages
-        public bool FindMatch(string searchQuery)
-        {
-            return Sender.Contains(searchQuery) || Subject.Contains(searchQuery) || Body.Contains(searchQuery);
-        }
-        
+        // Implemented by each subclass to format their respective body texts i.e. URLs, hyperlinks etc.
+        public abstract void FormatBody();
 
-        /*public string getType(){ return type; }
-        public string getHeader(){ return Header; }
-        public string getSender(){ return Sender; }
-        public string getSubject(){ return Subject; }
-        public string getMainBody() { return Body; }*/
+        // For searching for specific messages
+        public abstract bool FindMatch(string searchQuery);
+
+        // Finds any abbreviations noted in the csv file and replaces them
+        public string FindAbbreviations(string bodyText)
+        {
+            for (int i = 0; i < Textspeak.GetAbbreviations().Count; i++)
+            {
+                if (bodyText.Contains(Textspeak.GetAbbreviations()[i]))
+                {
+                    // Example: replace 'ROFL' with 'ROFL <Rolls on floor laughing>'
+                    bodyText.Replace(Textspeak.GetAbbreviations()[i], Textspeak.GetAbbreviations()[i] + " <" + ReplaceAbbreviations(i) + ">");
+                }
+            }
+            return bodyText;
+        }
+
+        // Given an abbreviations list index, return the phrases counterpart
+        public string ReplaceAbbreviations(int index)
+        {
+            // Get the relevant phrase
+            return Textspeak.GetPhrases()[index];
+        }
+
+        public string   GetMessageType(){ return type; }
+        public string   GetHeader(){ return header; }
+        public string   GetSender(){ return sender; }
+        public string   GetBody() { return body; }
+        public void     SetBody(string body) { this.body = body; }
     }
 }

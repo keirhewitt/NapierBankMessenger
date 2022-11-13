@@ -1,14 +1,15 @@
 ﻿
 namespace NapierBankMessenger.MVVM.Model
 {
-    public class SIR : Message
+    public class SIR : Email
     {
-        private string _incident_type;
+        private readonly string _incident_type;
 
-        public SIR(string id, string body_subject, string body_main, string incident_type) : base(id, body_subject, body_main)
+        public SIR(string type, string sender, string body, string subject, string incident_type) : base(type, sender, body, subject)
         {
             _incident_type = incident_type;
         }
-        public string getIncidentType() {  return _incident_type; }
+
+        public string GetIncidentType() {  return _incident_type; }
     }
 }

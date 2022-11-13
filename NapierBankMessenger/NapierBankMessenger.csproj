@@ -130,9 +130,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MVVM\FileIO\Textspeak.cs" />
     <Compile Include="MVVM\Model\Controller.cs" />
+    <Compile Include="MVVM\Model\Email.cs" />
     <Compile Include="MVVM\Model\Message.cs" />
     <Compile Include="MVVM\Model\SIR.cs" />
+    <Compile Include="MVVM\Model\SMS.cs" />
+    <Compile Include="MVVM\Model\Tweet.cs" />
     <Compile Include="MVVM\ViewModel\DataValidationViewModel.cs" />
     <Compile Include="MVVM\ViewModel\InputParserViewModel.cs" />
     <Compile Include="MVVM\ViewModel\MessagePageViewModel.cs" />

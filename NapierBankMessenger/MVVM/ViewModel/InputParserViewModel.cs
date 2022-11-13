@@ -139,17 +139,17 @@ namespace NapierBankMessenger.MVVM.ViewModel
             // SMS
             if (validationModel.GetMessageType() == "S")
             {
-                Ctrl.AddMessage(new Message("S", Sender, Body));
+                Ctrl.AddMessage(new SMS("S", Sender, Body));
             }
             // Email
             else if (validationModel.GetMessageType() == "E")
             {
-                Ctrl.AddMessage(new Message("E", Sender, Body, Subject));
+                Ctrl.AddMessage(new Email("E", Sender, Body, Subject));
             }
             // Tweet
             else
             {
-                Ctrl.AddMessage(new Message("T", Sender, Body, Subject));
+                Ctrl.AddMessage(new Tweet("T", Sender, Body));
             }
 
             Output = Ctrl.Messages.Last().Sender + "\n" + Ctrl.Messages.Last().Subject + "\n" + Ctrl.Messages.Last().Body;
