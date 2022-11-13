@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using NapierBankMessenger.MVVM.Model;
+using System;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
@@ -30,24 +31,24 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public Dictionary<string, string> InputErrors { get; private set; } = new Dictionary<string, string>();
         public ICommand ParseDataButton { get; private set; }
 
-        public Controller Ctrl {  get => _controller; }
+        public Controller Ctrl { get => _controller; }
         public DataValidationViewModel validationModel;
 
         // Contains flags for each field --> 0: Phone, 1: Email, 2: Tweet
         // For Subject: 3 = Not Required, -1 = Validation Error
-        // Int array of size: 3 (Sender, subject, body)
-        public Dictionary<string, int> Flags
+        // Int array of size: 3 (Sender, subject, Body)
+        public Int16 MessageType
         {
-            get => validationModel.Flags;
+            get => validationModel.MessageType;
             private set
             {
-                validationModel.Flags = value;
+                validationModel.MessageType = value;
                 OnPropertyChanged();
             } 
         }
 
         // Binded to Subject Text Box - Field linked with "IsEnabled"
-        public bool SubjectLineDisabled { get => subjectRequired; }
+        public bool SubjectLineEnabled { get => subjectRequired; set { subjectRequired = true; OnPropertyChanged(); } }
 
         public string Sender 
         {
@@ -56,9 +57,9 @@ namespace NapierBankMessenger.MVVM.ViewModel
             {
                 _sender = value;
                 // IF Sender line is in Email format, enable Subject Box
-                if (validationModel.CheckForEmail(_sender) ? subjectRequired = true : subjectRequired = false)
+                if (validationModel.CheckForEmail(Sender) ? SubjectLineEnabled = true : SubjectLineEnabled = false)
                 OnPropertyChanged();
-                OnPropertyChanged("SubjectLineDisabled");
+                OnPropertyChanged("SubjectLineEnabled");
             } 
         }
 
@@ -85,40 +86,9 @@ namespace NapierBankMessenger.MVVM.ViewModel
         // Return DataErrors specific to each field
         public string this[string field]
         {
-            get
-            {
-                string fieldError = null;
-
-                switch(field)
-                {
-                    case "Sender":
-                        fieldError = validationModel.ValidateSenderField(Sender);
-                        break;
-                    case "Subject":
-                        if (SubjectLineDisabled)
-                            fieldError = validationModel.ValidateSubject(Subject);
-                        break;
-                    case "Body":
-                        fieldError = validationModel.ValidateBody(Body);
-                        break;
-                }
-
-                // If InputErrors contains the field Key, set the new error Value to that Key
-                if (InputErrors.ContainsKey(field))
-                {
-                    InputErrors[field] = fieldError;
-                }
-                // Otherwise create a new field Key and Value
-                else if (fieldError != null)
-                {
-                    InputErrors.Add(field, fieldError);
-                }
-
-                OnPropertyChanged("InputErrors");
-
-                return fieldError;
-            }
+            get => GetFieldValidationErrors(field);
         }
+
 
         public InputParserViewModel(Controller ctrl)
         {
@@ -127,32 +97,64 @@ namespace NapierBankMessenger.MVVM.ViewModel
             ParseDataButton = new RelayCommand(ParseData, ParseCondition);
         }
 
+        // Collects the validation errors for each field
+        private string GetFieldValidationErrors(string propName)
+        {
+            string fieldError = null;
+
+            switch (propName)
+            {
+                case "Sender":
+                    fieldError = validationModel.ValidateSenderField(Sender);
+                    break;
+                case "Subject":
+                    if (SubjectLineEnabled)
+                        if (!string.IsNullOrEmpty(Subject))
+                            fieldError = validationModel.ValidateSubject(Subject);
+                    break;
+                case "Body":
+                    fieldError = validationModel.ValidateBody(Body);
+                    break;
+            }
+
+            return fieldError;
+        }
+
         // Checks if ready to submit message
         private bool ParseCondition(object data)
         {
-            return validationModel.ReadyToParseData();
+            if (validationModel.ReadyToParseData())
+            {
+                if (GetFieldValidationErrors("Sender") == "" && 
+                    GetFieldValidationErrors("Subject") == "" &&
+                    GetFieldValidationErrors("Body") == "")
+                    {
+                        return true;
+                    }
+            }
+            return false;
         }
 
         // Determine message type and then create and add Message object with the relevant params
         private void ParseData(object data)
         {
             // SMS
-            if (validationModel.GetMessageType() == "S")
+            if (validationModel.GetMessageType() == 0)
             {
-                Ctrl.AddMessage(new SMS("S", Sender, Body));
+                Ctrl.AddMessage(new SMS(Sender, Body));
             }
             // Email
-            else if (validationModel.GetMessageType() == "E")
+            else if (validationModel.GetMessageType() == 1)
             {
-                Ctrl.AddMessage(new Email("E", Sender, Body, Subject));
+                Ctrl.AddMessage(new Email(Sender, Body, Subject));
             }
             // Tweet
             else
             {
-                Ctrl.AddMessage(new Tweet("T", Sender, Body));
+                Ctrl.AddMessage(new Tweet(Sender, Body));
             }
 
-            Output = Ctrl.Messages.Last().Sender + "\n" + Ctrl.Messages.Last().Subject + "\n" + Ctrl.Messages.Last().Body;
+            Output = Ctrl.Messages.Last().ToString();
         }
 
     }

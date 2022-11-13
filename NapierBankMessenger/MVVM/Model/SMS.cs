@@ -5,7 +5,7 @@ namespace NapierBankMessenger.MVVM.Model
     public class SMS : Message
     {
         // Inherits all base constructor behaviour
-        public SMS(string type, string sender, string body) : base(type, sender, body) { }
+        public SMS(string sender, string body) : base(sender, body) { SetType("S"); }
 
         // Overridden search query function
         public override bool FindMatch(string searchQuery)

@@ -18,26 +18,23 @@ namespace NapierBankMessenger.MVVM.Model
      */
     public abstract class Message
     {
-        public static int IDSelector = 1;
-
-        private readonly string type; // "S", "E" or "T"
-        private readonly string header; // _id + 9 numeric chars
-        private readonly string sender; // Sender i.e. phone number, email, twitter ID
-        private string body; // Text content of the message
-
-        /**
-         *  Default param for subject since this will only be overwritten for Email messages
-         */
-        protected Message(string type, string sender, string body)
+        public static int IDSelector = 1; // Static to keep the ID for each message unique
+        private string type; // "S", "E" or "T"
+        public string Header { get; private set; } // _id + 9 numeric chars
+        public string Sender { get; private set; } // Sender i.e. phone number, email, twitter ID
+        public string Body { get; private set; }  // Text content of the message
+    
+        // Default param for subject since this will only be overwritten for Email messages
+        protected Message(string sender, string body)
         {
-            this.type = type;
-            this.header = type + IDSelector.ToString("000000000");
-            this.sender = sender;
-            this.body = body;
+            this.Header = type + IDSelector.ToString("000000000");
+            this.Sender = sender;
+            this.Body = body;
             IDSelector += 1;
+            FormatBody();
         }
 
-        // Implemented by each subclass to format their respective body texts i.e. URLs, hyperlinks etc.
+        // Implemented by each subclass to format their respective Body texts i.e. URLs, hyperlinks etc.
         public abstract void FormatBody();
 
         // For searching for specific messages
@@ -49,10 +46,8 @@ namespace NapierBankMessenger.MVVM.Model
             for (int i = 0; i < Textspeak.GetAbbreviations().Count; i++)
             {
                 if (bodyText.Contains(Textspeak.GetAbbreviations()[i]))
-                {
                     // Example: replace 'ROFL' with 'ROFL <Rolls on floor laughing>'
                     bodyText.Replace(Textspeak.GetAbbreviations()[i], Textspeak.GetAbbreviations()[i] + " <" + ReplaceAbbreviations(i) + ">");
-                }
             }
             return bodyText;
         }
@@ -64,10 +59,20 @@ namespace NapierBankMessenger.MVVM.Model
             return Textspeak.GetPhrases()[index];
         }
 
+        // Getters + Setters
         public string   GetMessageType(){ return type; }
-        public string   GetHeader(){ return header; }
-        public string   GetSender(){ return sender; }
-        public string   GetBody() { return body; }
-        public void     SetBody(string body) { this.body = body; }
+        public void     SetType(string type) { this.type = type; }
+        public string   GetHeader(){ return Header; }
+        public string   GetSender(){ return Sender; }
+        public string   GetBody() { return Body; }
+        public void     SetBody(string body) { this.Body = body; }
+
+        // Override ToString() 
+        public override string ToString()
+        {
+            return "Sender: " + GetSender() +
+                    "\n" +
+                    GetBody();
+        }
     }
 }

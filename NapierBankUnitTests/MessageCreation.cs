@@ -14,7 +14,7 @@ namespace NapierBankUnitTests
         {
             string test = "This is a test method with a https://www.wayfair.co.uk/furniture/pdp/17-stories-multimedia-open-dvdcd-shelf-u000782724.html hyperlink contained within it.";
             string expected = "This is a test method with a <https://www.wayfair.co.uk/furniture/pdp/17-stories-multimedia-open-dvdcd-shelf-u000782724.html> hyperlink contained within it.";
-            //string actual = Email.MakeLink(test);
+            //string actual = Email.FormatURL(test);
         }
     }
 }

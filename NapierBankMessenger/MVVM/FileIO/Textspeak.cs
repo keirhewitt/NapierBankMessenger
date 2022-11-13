@@ -3,13 +3,14 @@ using System.IO;
 
 namespace NapierBankMessenger.MVVM.FileIO
 {
+    // Handles loading of Textspeak abbreviations CSV file
     public static class Textspeak
     {
         private static List<string> abbreviations = new List<string>();
         private static List<string> phrases = new List<string>();
 
         // Read in CSV file and append each column to the 2 lists
-        public static void Main()
+        public static void IO()
         {
             using(var r = new StreamReader("C:\\Users\\Keir\\OneDrive\\University Work\\Year 3\\Software Engineering\\Coursework\\textwords.csv"))
             {

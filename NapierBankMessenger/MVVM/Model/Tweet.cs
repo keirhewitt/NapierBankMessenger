@@ -8,7 +8,19 @@ namespace NapierBankMessenger.MVVM.Model
 {
     public class Tweet : Message
     {
-        public Tweet(string type, string sender, string body) : base(type, sender, body) { }
+        /* Lists of hashtags and mentions means that the Controller
+         * can send request down the stack to get this data rather than
+         * creating more controller instances and dependencies to
+         * access it from down here */
+        private List<string> hashtags = new List<string>();
+        private List<string> mentions = new List<string>();
+
+        public Tweet(string sender, string body) : base(sender, body)
+        {
+            SetType("T");
+            //hashtags = new List<string>();
+            //mentions = new List<string>();
+        }
 
         // Overridden search query function
         public override bool FindMatch(string searchQuery)
@@ -16,21 +28,29 @@ namespace NapierBankMessenger.MVVM.Model
             return GetSender().Contains(searchQuery) || GetBody().Contains(searchQuery);
         }
 
+        // Change any abbreviations and collect all hashtags and mentions
         public override void FormatBody()
         {
-            throw new NotImplementedException();
+            SetBody(FindAbbreviations(GetBody()));
+            GetHashtagsAndMentions();
         }
 
+        // Add Hashtags and Mentions to relevant lists.
         public void GetHashtagsAndMentions()
         {
             foreach (string word in GetBody().Split(' '))
             {
                 if (word.StartsWith("#"))
-                {
-
-                }
+                    hashtags.Add(word);
+                else if (word.StartsWith("@"))
+                    mentions.Add(word);
+                continue;
             }
         }
+
+        // Getters
+        public List<string> GetHashtags() { return hashtags; }
+        public List<string> GetMentions() { return mentions; }
 
     }
 }

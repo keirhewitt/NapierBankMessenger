@@ -1,4 +1,5 @@
-﻿using NapierBankMessenger.MVVM.ViewModel;
+﻿using NapierBankMessenger.MVVM.FileIO;
+using NapierBankMessenger.MVVM.ViewModel;
 using System.Windows;
 
 
@@ -12,7 +13,8 @@ namespace NapierBankMessenger
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new ViewModelController();
+            Textspeak.IO(); // Initialise Textspeak method to open CSV file
+            this.DataContext = new ViewModelController();         
         }
 
         // Exit program
