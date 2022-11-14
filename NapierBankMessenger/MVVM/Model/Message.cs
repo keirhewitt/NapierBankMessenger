@@ -21,6 +21,7 @@ namespace NapierBankMessenger.MVVM.Model
         public static int IDSelector = 1; // Static to keep the ID for each message unique
         private string type; // "S", "E" or "T"
         public string Header { get; private set; } // _id + 9 numeric chars
+        public string Subject { get; private set; }
         public string Sender { get; private set; } // Sender i.e. phone number, email, twitter ID
         public string Body { get; private set; }  // Text content of the message
     
@@ -30,8 +31,8 @@ namespace NapierBankMessenger.MVVM.Model
             this.Header = type + IDSelector.ToString("000000000");
             this.Sender = sender;
             this.Body = body;
+            this.Subject = "";
             IDSelector += 1;
-            FormatBody();
         }
 
         // Implemented by each subclass to format their respective Body texts i.e. URLs, hyperlinks etc.

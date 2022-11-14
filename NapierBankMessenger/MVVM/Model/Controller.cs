@@ -176,7 +176,7 @@ namespace NapierBankMessenger.MVVM.Model
                     "victoria.jast@hotmail.com", "Good Morning\n\n, " +
                     "I’ve recently had work done on the cast iron downpipe outside my flat and was advised to get an ASAP fix.\n" +
                     "All pieces are damaged and leaking, as well as some cracked brackets – is this something that you could fix ?\n" +
-                    "Images of the damage attached above.\n" +
+                    "Images of https://www.wayfair.co.uk/garden/sb0/conversations-sets-c1876293.htmls the damage attached above.\n" +
                     "Thanks for your time.\n" +
                     "Keir",
                     "Cast Iron Downpipe Query"

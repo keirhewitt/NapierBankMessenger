@@ -8,10 +8,11 @@ namespace NapierBankMessenger.MVVM.Model
     {
         private readonly string _incident_type;
 
-        public SIR(string sender, string body, string subject, string incident_type) : base(sender, body, subject)
+        public SIR(string sender, string body, string subject) : base(sender, body, subject)
         {
             SetType("SIR");
-            _incident_type = incident_type;
+            _incident_type = subject;
+            FormatBody();
         }
 
         public string GetIncidentType() {  return _incident_type; }

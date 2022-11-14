@@ -13,19 +13,13 @@ namespace NapierBankMessenger.MVVM.ViewModel
         private readonly string[] email_format_sequences = { "@hotmail.com", "@gmail.com", "@live.napier.ac.uk" };
         private Int16 _messageType;
 
-
-        // Contains flags for each field --> 0: Phone, 1: Email, 2: Tweet
-        // For Subject: 3 = Not Required, -1 = Validation Error
-        // Int array of size: 3 (Sender, subject, Body)
+        // Message Type corresponds to SMS, Email, Tweet, SIR
         public Int16 MessageType
         {
             get => _messageType;
             set
             {
                 _messageType = value;
-                Debug.Write("\n\n\n\n");
-                Debug.Write(_messageType);
-                Debug.Write("\n\n\n\n");
                 OnPropertyChanged();
             }
         }

@@ -18,8 +18,7 @@ namespace NapierBankMessenger.MVVM.Model
         public Tweet(string sender, string body) : base(sender, body)
         {
             SetType("T");
-            //hashtags = new List<string>();
-            //mentions = new List<string>();
+            FormatBody();
         }
 
         // Overridden search query function

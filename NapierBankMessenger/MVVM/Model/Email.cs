@@ -1,5 +1,7 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace NapierBankMessenger.MVVM.Model
@@ -9,14 +11,14 @@ namespace NapierBankMessenger.MVVM.Model
         private string subject;
 
         private readonly string urlPlaceholder = "<URL Quarantined>";
-        private List<string> _quarantinedURLS;
+        private List<string> _quarantinedURLS = new List<string>();
 
         // Subclass contains unique subject method
         public Email(string sender, string body, string subject) : base(sender, body)
         {
             SetType("E");
             this.subject = subject;
-            _quarantinedURLS = new List<string>();
+            FormatBody();
         }
 
         // Return true/false if search term exists in Sender, Body and Subject
@@ -35,17 +37,20 @@ namespace NapierBankMessenger.MVVM.Model
         public string FormatURL(string text)
         {
             string actualUrl = "";
+            Uri temp;
 
-            Match match = Regex.Match(text, @"(http|ftp|https)://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?/g");
-
-            if (match.Success)
+            foreach (string word in text.Split(' '))
             {
-                // Separate out the actual URL and add it to Quarantined list
-                actualUrl = "<" + match.Value + ">";
-                _quarantinedURLS.Add(actualUrl);
+                // try to create Uri from word (Determine if valid URI or not)
+                if (Uri.TryCreate(word, UriKind.Absolute, out temp))
+                {
+                    // Separate out the actual URL and add it to Quarantined list
+                    actualUrl = "<" + word + ">";
+                    _quarantinedURLS.Add(actualUrl);
 
-                // Replace the displayed text with the placeholder text
-                return text.Replace(match.ToString(), urlPlaceholder);
+                    // Replace the displayed text with the placeholder text
+                    return text.Replace(word, urlPlaceholder);
+                }
             }
             return text;
         }

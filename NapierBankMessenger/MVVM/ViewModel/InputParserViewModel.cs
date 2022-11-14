@@ -28,15 +28,12 @@ namespace NapierBankMessenger.MVVM.ViewModel
 
         private bool subjectRequired = false;
 
-        public Dictionary<string, string> InputErrors { get; private set; } = new Dictionary<string, string>();
         public ICommand ParseDataButton { get; private set; }
 
         public Controller Ctrl { get => _controller; }
         public DataValidationViewModel validationModel;
 
-        // Contains flags for each field --> 0: Phone, 1: Email, 2: Tweet
-        // For Subject: 3 = Not Required, -1 = Validation Error
-        // Int array of size: 3 (Sender, subject, Body)
+        // Flag for message type: 0 = SMS, 1 = Email, 2 = Tweet, 3 = SIR, -1 = Error
         public Int16 MessageType
         {
             get => validationModel.MessageType;
@@ -48,7 +45,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
         }
 
         // Binded to Subject Text Box - Field linked with "IsEnabled"
-        public bool SubjectLineEnabled { get => subjectRequired; set { subjectRequired = true; OnPropertyChanged(); } }
+        public bool SubjectLineEnabled { get => subjectRequired; set { subjectRequired = value; } }
 
         public string Sender 
         {
@@ -57,8 +54,18 @@ namespace NapierBankMessenger.MVVM.ViewModel
             {
                 _sender = value;
                 // IF Sender line is in Email format, enable Subject Box
-                if (validationModel.CheckForEmail(Sender) ? SubjectLineEnabled = true : SubjectLineEnabled = false)
+                if (validationModel.CheckForEmail(Sender))
+                {
+                    SubjectLineEnabled = true;
+                }
+                else
+                {
+                    SubjectLineEnabled = false;
+                    Subject = "";
+                }
                 OnPropertyChanged();
+                OnPropertyChanged("Body");
+                OnPropertyChanged("Subject");
                 OnPropertyChanged("SubjectLineEnabled");
             } 
         }
@@ -72,7 +79,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public string Body
         {
             get => _body;
-            set { _body = value; OnPropertyChanged(); }
+            set { _body = value; OnPropertyChanged(); OnPropertyChanged("Sender"); OnPropertyChanged("Subject"); }
         }
 
         public string Output
@@ -88,7 +95,6 @@ namespace NapierBankMessenger.MVVM.ViewModel
         {
             get => GetFieldValidationErrors(field);
         }
-
 
         public InputParserViewModel(Controller ctrl)
         {
@@ -149,11 +155,14 @@ namespace NapierBankMessenger.MVVM.ViewModel
                 Ctrl.AddMessage(new Email(Sender, Body, Subject));
             }
             // Tweet
-            else
+            else if (validationModel.GetMessageType() == 2)
             {
                 Ctrl.AddMessage(new Tweet(Sender, Body));
             }
-
+            else
+            {
+                Ctrl.AddMessage(new SIR(Sender, Body, Subject));
+            }
             Output = Ctrl.Messages.Last().ToString();
         }
 

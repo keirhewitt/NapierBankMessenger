@@ -47,7 +47,7 @@
                 FontSize="20"
                 Text="{Binding Sender,ValidatesOnDataErrors=True,
                 UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="{Binding InputErrors[Sender]}"/>
+                ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 
             <!-- Subject Label -->
             <Label 
@@ -75,7 +75,7 @@
                 Text="{Binding Subject,ValidatesOnDataErrors=True,
                 UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding SubjectLineEnabled, UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="{Binding InputErrors[Subject]}"/>
+                ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 
             <!-- Body Text box Label -->
             <Label 
@@ -100,7 +100,7 @@
                 FontSize="20"
                 Text="{Binding Body,ValidatesOnDataErrors=True,
                 UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="{Binding InputErrors[Body]}"/>
+                ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
 
             <!-- Parse Button -->
             <Button 
