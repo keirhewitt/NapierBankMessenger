@@ -139,7 +139,7 @@
             <ContentControl 
                 Grid.Row="1"                       
                 Grid.Column="1"            
-                Content="{Binding MessageView}"/>
+                Content="{Binding MultiView}"/>
 
 
             <!-- Bottom right section 
@@ -154,7 +154,7 @@
             <ContentControl 
                 Grid.Row="1"
                 Grid.Column="1"
-                Content="{Binding EOS}"/>
+                Content="{Binding MultiView}"/>
 
             <!--
             <views:EndOfSession x:Name="endOf">

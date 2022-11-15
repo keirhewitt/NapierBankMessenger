@@ -22,9 +22,15 @@ namespace NapierBankMessenger.MVVM.View
     /// </summary>
     public partial class EndOfSession : UserControl
     {
-        public EndOfSession()
+        public EndOfSession(Controller ctrl)
         {
             InitializeComponent();
+            DataContext = new EndOfSessionViewModel(ctrl);
+        }
+
+        private void OnFinish(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

@@ -6,27 +6,42 @@
              xmlns:local="clr-namespace:NapierBankMessenger.MVVM.View"
              xmlns:viewModel="clr-namespace:NapierBankMessenger.MVVM.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="525" d:DesignWidth="400">
 
     <Grid>
-        <Border Background="AntiqueWhite">
+        <Border Background="SlateGray">
             <StackPanel
                 Width="400"
                 HorizontalAlignment="Center">
 
                 <StackPanel Margin="5,5,5,20">
-                    <Label Content="Trending" Background="LightGreen"/>
-                    <TextBlock Width="350" MinHeight="100" Background="#FAFAFA" />
+                    <Label Width="350" Content="Trending" Background="LightGreen"/>
+                    <TextBlock Width="350" Height="90" Background="#FAFAFA" />
                 </StackPanel>
 
                 <StackPanel Margin="5,5,5,20">
-                    <Label Content="Mentions" Background="LightGray"/>
-                    <TextBlock Width="350" MinHeight="100" Background="#FAFAFA"/>
+                    <Label Width="350" Content="Mentions" Background="LightGray"/>
+                    <TextBlock Width="350" Height="90" Background="#FAFAFA"/>
                 </StackPanel>
 
                 <StackPanel Margin="5,5,5,20">
-                    <Label Content="Mentions" Background="LightCoral"/>
-                    <TextBlock Width="350" MinHeight="100" Background="#FAFAFA"/>
+                    <Label Content="Serious Incident Reports" Background="LightCoral"/>
+                    <ListView 
+                        ItemsSource="{Binding SIRs}"
+                        ItemContainerStyle="{StaticResource MessageListItem}"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        MaxHeight="120">
+
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel>
+                    <Button 
+                        Content="Finish" 
+                        Width="100"
+                        Padding="3" Click="OnFinish"/>
                 </StackPanel>
 
             </StackPanel>

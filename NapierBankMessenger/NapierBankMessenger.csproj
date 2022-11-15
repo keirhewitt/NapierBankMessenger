@@ -146,6 +146,7 @@
     <Compile Include="MVVM\Model\SMS.cs" />
     <Compile Include="MVVM\Model\Tweet.cs" />
     <Compile Include="MVVM\ViewModel\DataValidationViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\EndOfSessionViewModel.cs" />
     <Compile Include="MVVM\ViewModel\InputParserViewModel.cs" />
     <Compile Include="MVVM\ViewModel\MessagePageViewModel.cs" />
     <Compile Include="MVVM\ViewModel\ViewModelController.cs" />

@@ -13,6 +13,8 @@ namespace NapierBankMessenger.MVVM.ViewModel
         private object _parserView;
         private object _messageListView;
         private object _endOfSession;
+        private object _selectedView;
+        private object _onAppExit;
 
         private readonly string _title = "Napier Bank";
 
@@ -48,16 +50,37 @@ namespace NapierBankMessenger.MVVM.ViewModel
             }
         }
 
+        public object MultiView
+        {
+            get {  return _selectedView; }
+            set
+            {
+                _selectedView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public object OnAppExit
+        {
+            get { return _onAppExit; }
+            set
+            {
+                MultiView = EOS;
+                OnPropertyChanged();
+            }
+        }
+
         public ViewModelController()
         {
             Ctrl = new Controller();
             MsgPage = new MessagePage(Ctrl);
             InputPage = new InputParser(Ctrl);
-            EndSession = new EndOfSession();
+            EndSession = new EndOfSession(Ctrl);
             
             MessageView = MsgPage;
             ParserView = InputPage;
             EOS = EndSession;
+            MultiView = MessageView;
         }
     }
 }

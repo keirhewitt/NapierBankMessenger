@@ -10,24 +10,20 @@ namespace NapierBankMessenger
     /// </summary>
     public partial class MainWindow : Window
     {
+        ViewModelController VMC;
+
         public MainWindow()
         {
             InitializeComponent();
             Textspeak.IO(); // Initialise Textspeak method to open CSV file
-            this.DataContext = new ViewModelController();         
+            VMC = new ViewModelController();
+            this.DataContext = VMC;
         }
 
         // Open window that shows end of session details
         private void ButtonExit(object sender, RoutedEventArgs e)
         {
-            //endOf.WindowOpen = true;        
-        }
-
-        // Shut down application after end of session pop up is closed
-        private void OnCloseSession(object sender, RoutedEventArgs e)
-        {
-            //endOf.WindowOpen = false;
-            Application.Current.Shutdown();
+            VMC.OnAppExit = true;  
         }
 
         // Maximimse the screen, if maximised, return to normal
