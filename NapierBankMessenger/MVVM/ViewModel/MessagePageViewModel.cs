@@ -5,7 +5,13 @@ namespace NapierBankMessenger.MVVM.ViewModel
 {
     public class MessagePageViewModel : ScriptableObject
     {
-        private string MessageListHeader { get { return "Messages"; } }
+        private string _messageListHeader = "Messages";
+
+        public string MessageListHeader 
+        { 
+            get => _messageListHeader;         
+        }
+
         private Controller _controller;
 
         public Controller Ctrl 

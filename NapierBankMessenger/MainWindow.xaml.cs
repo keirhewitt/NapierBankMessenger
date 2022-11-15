@@ -17,9 +17,16 @@ namespace NapierBankMessenger
             this.DataContext = new ViewModelController();         
         }
 
-        // Exit program
+        // Open window that shows end of session details
         private void ButtonExit(object sender, RoutedEventArgs e)
         {
+            //endOf.WindowOpen = true;        
+        }
+
+        // Shut down application after end of session pop up is closed
+        private void OnCloseSession(object sender, RoutedEventArgs e)
+        {
+            //endOf.WindowOpen = false;
             Application.Current.Shutdown();
         }
 

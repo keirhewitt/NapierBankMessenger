@@ -24,6 +24,9 @@
 
         </Style.Setters>
         <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#22202f" />
+            </Trigger>
             <Trigger Property="IsChecked" Value="True">
                 <Setter Property="Background" Value="#22202f" />
             </Trigger>

@@ -21,7 +21,7 @@
     </Window.DataContext>
 
     <Border CornerRadius="20">
-        
+
         <Border.Background>
             <LinearGradientBrush StartPoint="1,0" EndPoint="0,2">
                 <GradientStop Color="#56ab2f" Offset="0.0" />
@@ -106,16 +106,20 @@
                              FontSize="14"
                              Style="{StaticResource NavigationLinks}"/>
 
-                <RadioButton Content="Trends"
+                <!-- Potential evolution content -->
+                <RadioButton Content="Requests"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
+                             IsEnabled="False"
                              Style="{StaticResource NavigationLinks}"/>
 
+                <!-- Potential evolution content -->
                 <RadioButton Content="History"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
+                             IsEnabled="False"
                              Style="{StaticResource NavigationLinks}"/>
 
             </StackPanel>
@@ -145,7 +149,32 @@
                 Grid.Row="1"
                 Grid.Column="2"
                 Content="{Binding ParserView}"/>
-            
+    
+            <!-- End of Session -->
+            <ContentControl 
+                Grid.Row="1"
+                Grid.Column="1"
+                Content="{Binding EOS}"/>
+
+            <!--
+            <views:EndOfSession x:Name="endOf">
+                <StackPanel 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+
+                    <TextBlock 
+                        Text="{Binding}"/>
+
+                    <Button 
+                        x:Name="buttonCloseApp"
+                        Margin="5"
+                        Padding="5"
+                        Click="OnCloseSession"
+                        Content="Finish"/>
+
+                </StackPanel>
+            </views:EndOfSession>-->
+
         </Grid>
 
     </Border>

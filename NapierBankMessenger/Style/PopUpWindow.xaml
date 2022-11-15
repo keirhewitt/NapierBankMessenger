@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:NapierBankMessenger.MVVM.View">
+    <Style TargetType="{x:Type local:EndOfSession}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:EndOfSession}">
+                    <ControlTemplate.Resources>
+                        <BooleanToVisibilityConverter x:Key="WindowOpenBool" />
+                    </ControlTemplate.Resources>
+                    
+                    <Border 
+                        Visibility="{TemplateBinding WindowOpen, Converter={StaticResource WindowOpenBool}}"
+                        Background="{TemplateBinding Background}">
+                        
+                        <ContentControl Content="{TemplateBinding Content}"/>
+                        
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

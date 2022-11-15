@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="NapierBankMessenger.MVVM.View.EndOfSession"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NapierBankMessenger.MVVM.View"
+             xmlns:viewModel="clr-namespace:NapierBankMessenger.MVVM.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+
+    <Grid>
+        <Border Background="AntiqueWhite">
+            <StackPanel
+                Width="400"
+                HorizontalAlignment="Center">
+
+                <StackPanel Margin="5,5,5,20">
+                    <Label Content="Trending" Background="LightGreen"/>
+                    <TextBlock Width="350" MinHeight="100" Background="#FAFAFA" />
+                </StackPanel>
+
+                <StackPanel Margin="5,5,5,20">
+                    <Label Content="Mentions" Background="LightGray"/>
+                    <TextBlock Width="350" MinHeight="100" Background="#FAFAFA"/>
+                </StackPanel>
+
+                <StackPanel Margin="5,5,5,20">
+                    <Label Content="Mentions" Background="LightCoral"/>
+                    <TextBlock Width="350" MinHeight="100" Background="#FAFAFA"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -108,6 +108,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MVVM\View\EndOfSession.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\View\InputParser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +125,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\NavigationLinks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Style\PopUpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,6 +150,9 @@
     <Compile Include="MVVM\ViewModel\MessagePageViewModel.cs" />
     <Compile Include="MVVM\ViewModel\ViewModelController.cs" />
     <Compile Include="Commands\ScriptableObject.cs" />
+    <Compile Include="MVVM\View\EndOfSession.xaml.cs">
+      <DependentUpon>EndOfSession.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\View\InputParser.xaml.cs">
       <DependentUpon>InputParser.xaml</DependentUpon>
     </Compile>
