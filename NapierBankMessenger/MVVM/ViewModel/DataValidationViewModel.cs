@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,8 +11,24 @@ namespace NapierBankMessenger.MVVM.ViewModel
 {
     public class DataValidationViewModel : ScriptableObject
     {
-        private readonly string[] email_format_sequences = { "@hotmail.com", "@gmail.com", "@live.napier.ac.uk" };
+        private readonly string[] serious_incidents = {"Theft",
+                                                        "Staff Attack",
+                                                        "ATM Theft",
+                                                        "Raid",
+                                                        "Customer Attack",
+                                                        "Staff Abuse",
+                                                        "Bomb Threat",
+                                                        "Terrorism",
+                                                        "Suspicious Incident",
+                                                        "Intelligence",
+                                                        "Cash Loss" };
+        private readonly string[] email_format_sequences = { "@hotmail.com", 
+                                                                "@gmail.com", 
+                                                                "@live.napier.ac.uk",
+                                                                "@outlook.com", 
+                                                                "@nb.gov"};
         private Int16 _messageType;
+        private DateTime _dt;
 
         // Message Type corresponds to SMS, Email, Tweet, SIR
         public Int16 MessageType
@@ -76,6 +93,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
                     return "Phone Number must be 12 characters long!";
                 }
             }
+            
             return "";
         }
 
@@ -107,6 +125,79 @@ namespace NapierBankMessenger.MVVM.ViewModel
             return "";
         }
 
+        // Make sure date is in format dd/MM/yy
+        public string ValidateDate(string date)
+        {
+            if (!StringHasSpace(date))
+                return "Invalid format, must be in format: SIR dd/mm/yy";
+
+            // Split string into 'SIR', 'dd/mm/yy' - correct formatting
+            string[] senderFormatted = date.Split(' ');
+
+            if (senderFormatted.Length > 2)
+                return "Invalid format, must be in format: SIR dd/mm/yy";
+
+            // Parse to this format
+            string format = "dd/MM/yy";
+            DateTime dateTime;
+
+            // Try to parse dd/mm/yy section of string as DateTime of format : dd/mm/yy
+            if (!DateTime.TryParseExact(senderFormatted[1], format, new CultureInfo("en-US"),
+                DateTimeStyles.None, out dateTime))
+            { 
+                return "Invalid date format!";
+            }
+            return "";
+        }
+
+        // Validates a sort code to be in format xx-xx-xx or xxxxxx
+        public string ValidateSortCode(string sortcode)
+        {
+            // Regex for finding sortcodes, allows no dashes
+            Regex regX = new Regex(@"\b([0-9]{2})-?([0-9]{2})-?([0-9]{2})\b");
+            Match m = regX.Match(sortcode);
+
+            if (!m.Success)
+            {
+                return "Sort code not valid!";
+            }
+            return "";
+        }
+
+        // Splits body into 2 lines
+        // Ensures 2 line formatting
+        // Ensures strict Incident Type is chosen
+        public string ValidateSortCodeBody(string body)
+        {
+            string incident = "";
+
+            // Return error if body does not have a line break
+            if (!body.Contains(Environment.NewLine))
+                return "Body must be in format: xx-xx-xx \\n <Incident Type>";
+            string[] lines = body.Split('\n');
+
+            // Return error if body does not have 2 separate lines
+            if (lines.Length != 2)
+                return "Body must be in format: xx-xx-xx \\n <Incident Type>";
+            incident = lines[1];
+            
+            // Check each serious incident against 2nd body line
+            foreach (string i in serious_incidents)
+            {
+                if (incident.Equals(i))
+                {
+                    return "";
+                }
+            }
+            return "Invalid serious incident type.";
+        }
+
+        // Make sure a string can be Split()
+        public bool StringHasSpace(string str)
+        {
+            return str.Any(i => Char.IsWhiteSpace(i));
+        }
+
         // Ensure a correct Sender format, returns Error message as a tooltip when hovering over the Sender Text Box
         public string ValidateSenderField(string sender)
         {
@@ -128,7 +219,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
             else if (sender.Contains("@") && !sender.StartsWith("@")) // Contains `@` but does not start with `@` - twitter ID starts with this.
             {
                 MessageType = 1;
-                return ValidateEmail(sender);
+                return ValidateEmail(sender);               
             }
 
             // Twitter ID
@@ -137,23 +228,35 @@ namespace NapierBankMessenger.MVVM.ViewModel
                 MessageType = 2;
                 return ValidateTwitterID(sender);
             }
-
             return "";
         }
 
         // Validate the subject text field for each message type.
         public string ValidateSubject(string subject)
         {
-            // Only validate Subject field if Message type is Email
-            if (MessageType == 1)
+            if (MessageType != 0 && MessageType != 2 && MessageType != -1)
             {
-                // If Sender is 1 (Email)
-                if (subject.Length > 20)
+                // Check if either Email or SIR
+                if (subject.StartsWith("SIR"))
+                    MessageType = 3;
+                // Only validate Subject field if Message type is Email
+                if (MessageType == 1)
                 {
-                    return "Subject must be a max of 20 characters.";
-                }
+                    // Email cannot have empty subject
+                    if (string.IsNullOrWhiteSpace(subject))
+                        return "Email cannot have empty subject!";
 
-            } 
+                    // If Sender is 1 (Email)
+                    if (subject.Length > 20)
+                    {
+                        return "Subject must be a max of 20 characters.";
+                    }
+                }
+                else if (MessageType == 3)
+                {
+                    return ValidateDate(subject);
+                }
+            }
             return "";
         }
 
@@ -192,12 +295,12 @@ namespace NapierBankMessenger.MVVM.ViewModel
                 {
                     return "Tweet cannot be longer than 140 characters.";
                 }
-
             }
 
-            else
+            // SIR
+            else if (MessageType == 3)
             {
-                return "";
+                return ValidateSortCodeBody(body);
             }
 
             return "";

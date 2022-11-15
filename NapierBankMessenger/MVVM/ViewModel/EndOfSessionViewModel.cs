@@ -8,11 +8,6 @@ namespace NapierBankMessenger.MVVM.ViewModel
     {
         private Controller Ctrl;
 
-        public EndOfSessionViewModel(Controller ctrl)
-        {
-            Ctrl = ctrl;
-        }
-
         public Dictionary<string, int> TwitterMentions
         {
             get => Ctrl.TwitterMentions;
@@ -27,5 +22,11 @@ namespace NapierBankMessenger.MVVM.ViewModel
         {
             get => Ctrl.SIRs;
         }
+
+        public EndOfSessionViewModel(Controller ctrl)
+        {
+            Ctrl = ctrl;
+        }
+
     }
 }

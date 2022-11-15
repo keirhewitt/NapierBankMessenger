@@ -114,9 +114,9 @@ namespace NapierBankMessenger.MVVM.ViewModel
                     fieldError = validationModel.ValidateSenderField(Sender);
                     break;
                 case "Subject":
-                    if (SubjectLineEnabled)
-                        if (!string.IsNullOrEmpty(Subject))
-                            fieldError = validationModel.ValidateSubject(Subject);
+                    //if (SubjectLineEnabled)
+                        //if (!string.IsNullOrEmpty(Subject))
+                    fieldError = validationModel.ValidateSubject(Subject);
                     break;
                 case "Body":
                     fieldError = validationModel.ValidateBody(Body);
