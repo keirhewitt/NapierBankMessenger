@@ -95,6 +95,7 @@
                 Width="Auto"
                 Grid.Row="2"
                 Grid.Column="1"
+                AcceptsReturn="True"
                 BorderBrush="#FFE49E9E"
                 Background="#FFBFBFBF"
                 FontSize="20"

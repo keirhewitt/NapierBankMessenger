@@ -1,5 +1,7 @@
 ﻿
 using NapierBankMessenger.MVVM.FileIO;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace NapierBankMessenger.MVVM.Model
 {

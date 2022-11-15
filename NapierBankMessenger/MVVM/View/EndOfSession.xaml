@@ -21,7 +21,10 @@
 
                 <StackPanel Margin="5,5,5,20">
                     <Label Width="350" Content="Mentions" Background="LightGray"/>
-                    <TextBlock Width="350" Height="90" Background="#FAFAFA"/>
+                    <TextBlock 
+                        Width="350" 
+                        Height="90" 
+                        Background="#FAFAFA"/>
                 </StackPanel>
 
                 <StackPanel Margin="5,5,5,20">

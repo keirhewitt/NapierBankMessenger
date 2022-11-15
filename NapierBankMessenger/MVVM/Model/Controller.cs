@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NapierBankMessenger.MVVM.ViewModel;
 using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace NapierBankMessenger.MVVM.Model 
 {
     public class Controller : ScriptableObject
     {
+        protected readonly string filePath = Directory.GetCurrentDirectory();
+        protected readonly string fileName = @"export.json";
+
         private ObservableCollection<Message> _messages;
         private ObservableCollection<SIR> _sirList;
         private Dictionary<string, int> _mentionsList;  // Collection of all mentions in any session
@@ -53,12 +58,67 @@ namespace NapierBankMessenger.MVVM.Model
             _mentionsList = new Dictionary<string, int>();
             _trendingList = new Dictionary<string, int>();
             _quarantineList = new Dictionary<string, int>();
-            TestFunction();
+            //InitJSONFile();
         }
 
+        // Creates JSON file if one does not exist in location
+        public void InitJSONFile()
+        {        
+            if (!FileExists(filePath, fileName))
+            {
+                FileStream stream = File.Create(filePath);
+            }          
+        }
+
+        // Checks if file <filename> exists in location <directory>
+        private bool FileExists(string directory, string filename)
+        {
+            DirectoryInfo dir = new DirectoryInfo(directory);
+            FileInfo[] files = dir.GetFiles();
+            foreach(FileInfo file in files)
+            {
+                if (file.Name == filename)
+                    return true;
+            }
+            return false;
+        }
+
+        // Returns the full path to JSON file if it exists
+        private string ReturnJSONFilepath(string filename)
+        {
+            DirectoryInfo dir = new DirectoryInfo(filePath);
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                if (file.Name == filename)
+                    return file.FullName;
+            }
+            return "";
+        }
+
+        // Create format for JSON serialize settings
+        // Instantiates TypeNameHandling for all types so that inherited classes can be deserialized properly
+        public JsonSerializerSettings GetJSONSettings()
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            };
+            return settings;
+        }
+
+        // Sends a single message to the json file
         public void SendMessageToJSON(Message message)
         {
-
+            // Get all current data inside file
+            var originalData = File.ReadAllText(filePath);
+            if (originalData != null)
+            {
+                //Message msg = JsonConvert.DeserializeObject<Message>();
+            }
+            var jsonFormat = new JsonSerializerOptions {  WriteIndented = true };
+            //var jsonObj = JsonSerializer.Serialize(message, message.GetType(), jsonFormat);
+            
         }
 
         public void LoadMessagesFromJSON()
@@ -110,6 +170,7 @@ namespace NapierBankMessenger.MVVM.Model
                 dict[key] = 1;  // Add key and instantiate value to 1 (amount of instances of key in dict)
         }
 
+        // .. . shortened code
         public void RemoveFromDictionary(Dictionary<string, int> dict, string key)
         {
             if (dict.ContainsKey(key))
@@ -147,6 +208,12 @@ namespace NapierBankMessenger.MVVM.Model
             if (x != null)
                 collection.Remove(x);
 
+        }
+
+        // Take dictionary and re-order it by Value
+        public void OrderDictionary(Dictionary<string, int> dict)
+        {
+            dict = dict.OrderBy(key => key.Value).ToDictionary(key => key.Key, key => key.Value);
         }
 
 
