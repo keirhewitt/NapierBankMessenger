@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NapierBankMessenger.MVVM.Model;
+using System;
 
 namespace NapierBankUnitTests
 {
@@ -32,9 +33,8 @@ namespace NapierBankUnitTests
         [TestMethod]
         public void TestSMSObject()
         {
-            string expected = "That was funny ROFL <Rolls on the floor laughing>";
-            SMS testsms = new SMS("07854215232", "That was funny ROFL");
-
+            string expected = "Yeah AAP <Always a pleasure> mate.";
+            SMS testsms = new SMS("07854215232", "Yeah AAP mate.");
             Assert.AreEqual(expected, testsms.GetBody());
         }
     }

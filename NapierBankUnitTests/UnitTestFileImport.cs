@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NapierBankMessenger.MVVM.FileIO;
 using System;
+using System.Linq;
 
 namespace NapierBankUnitTests
 {
@@ -12,23 +13,19 @@ namespace NapierBankUnitTests
         {
             Textspeak.IO();
             Assert.IsNotNull(Textspeak.GetAbbreviations());
-            foreach(string s in Textspeak.GetAbbreviations())
-            {
-                Assert.AreEqual("h", s);
-            }
             Assert.AreEqual("AAP", Textspeak.GetAbbreviations()[0]);
+            Assert.AreEqual("YW", Textspeak.GetAbbreviations().LastOrDefault());
         }
 
         [TestMethod]
+        // Make sure csv data has been imported properly by checking against known results
         public void PhrasesImport()
         {
             Textspeak.IO();
             Assert.IsNotNull(Textspeak.GetPhrases());
-            Assert.AreEqual("Always A Pleasure", Textspeak.GetPhrases()[0]);
-            foreach (string s in Textspeak.GetAbbreviations())
-            {
-                Assert.AreEqual("Always A Pleasure", s);
-            }
+            Assert.AreEqual("Always a pleasure", Textspeak.GetPhrases()[0]);
+            Assert.AreEqual("You're welcome", Textspeak.GetPhrases().LastOrDefault());
+
         }
     }
 }
