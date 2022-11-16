@@ -22,14 +22,17 @@ namespace NapierBankMessenger.MVVM.View
     /// </summary>
     public partial class EndOfSession : UserControl
     {
+        Controller Ctrl;
         public EndOfSession(Controller ctrl)
         {
             InitializeComponent();
             DataContext = new EndOfSessionViewModel(ctrl);
+            Ctrl = ctrl;
         }
 
         private void OnFinish(object sender, RoutedEventArgs e)
         {
+            Ctrl.SendToJSON();
             Application.Current.Shutdown();
         }
     }
