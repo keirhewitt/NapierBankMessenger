@@ -11,10 +11,14 @@ namespace NapierBankMessenger.MVVM.Model
     public class Controller : ScriptableObject
     {
         protected readonly string filePath = Directory.GetCurrentDirectory();
+        protected readonly string[] filePaths = { @"C:\Users", "Keir", "Desktop", "courseworkdata" };
         protected readonly string fileName = @"export.json";
+
+        private string fullpath;
 
         private ObservableCollection<Message> _messages;
         private ObservableCollection<SIR> _sirList;
+        private List<Message> serializableList;
         private Dictionary<string, int> _mentionsList;  // Collection of all mentions in any session
         private Dictionary<string, int> _trendingList;  // Collection of all hashtags in any session
         private Dictionary<string, int> _quarantineList;// Collection of quarantined URLs
@@ -58,15 +62,16 @@ namespace NapierBankMessenger.MVVM.Model
             _mentionsList = new Dictionary<string, int>();
             _trendingList = new Dictionary<string, int>();
             _quarantineList = new Dictionary<string, int>();
-            //InitJSONFile();
+            InitJSONFile();
         }
 
         // Creates JSON file if one does not exist in location
         public void InitJSONFile()
-        {        
-            if (!FileExists(filePath, fileName))
+        {
+            fullpath = Path.Combine(filePaths);
+            if (!FileExists(fullpath, fileName))
             {
-                FileStream stream = File.Create(filePath);
+                FileStream stream = File.Create(fullpath + "/" + fileName);
             }          
         }
 
@@ -84,13 +89,13 @@ namespace NapierBankMessenger.MVVM.Model
         }
 
         // Returns the full path to JSON file if it exists
-        private string ReturnJSONFilepath(string filename)
+        private string ReturnJSONFilepath()
         {
-            DirectoryInfo dir = new DirectoryInfo(filePath);
+            DirectoryInfo dir = new DirectoryInfo(fullpath);
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                if (file.Name == filename)
+                if (file.Name == fileName)
                     return file.FullName;
             }
             return "";
@@ -108,22 +113,20 @@ namespace NapierBankMessenger.MVVM.Model
         }
 
         // Sends a single message to the json file
-        public void SendMessageToJSON(Message message)
+        public void SendToJSON()
         {
-            // Get all current data inside file
-            var originalData = File.ReadAllText(filePath);
-            if (originalData != null)
-            {
-                //Message msg = JsonConvert.DeserializeObject<Message>();
-            }
-            var jsonFormat = new JsonSerializerOptions {  WriteIndented = true };
-            //var jsonObj = JsonSerializer.Serialize(message, message.GetType(), jsonFormat);
-            
+            ConvertToSerializableList();
+            File.WriteAllText(ReturnJSONFilepath(), JsonConvert.SerializeObject(serializableList, Formatting.Indented));          
         }
 
         public void LoadMessagesFromJSON()
         {
 
+        }
+
+        private void ConvertToSerializableList()
+        {
+            serializableList = _messages.ToList();
         }
 
         // Add Hashtags and Mentions to the relevant lists
@@ -157,8 +160,8 @@ namespace NapierBankMessenger.MVVM.Model
         {
             foreach(string q_url in sir.GetQuarantinedURLs())
                 AddToDictionary(QuarantineList, q_url);
-
-            SIRs.Add(sir);
+            Messages.Add(sir);
+            
         }
 
         // Shorten amount code for these operations
