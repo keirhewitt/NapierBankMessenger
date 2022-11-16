@@ -1,7 +1,4 @@
 ﻿
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 namespace NapierBankMessenger.MVVM.Model
 {
     public class SIR : Email
@@ -10,9 +7,15 @@ namespace NapierBankMessenger.MVVM.Model
 
         public SIR(string sender, string body, string subject) : base(sender, body, subject)
         {
-            SetType("SIR");
-            _incident_type = subject;
+            _incident_type = subject;           
             FormatBody();
+            FormatHeader();
+        }
+
+        // Custom SIR header
+        public override void FormatHeader()
+        {
+            SetHeader("SIR" + IDSelector.ToString("000000000"));
         }
 
         public string GetIncidentType() {  return _incident_type; }

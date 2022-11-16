@@ -1,7 +1,6 @@
 ﻿
 using NapierBankMessenger.MVVM.FileIO;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using System.Collections.Generic;
 
 namespace NapierBankMessenger.MVVM.Model
 {
@@ -28,12 +27,11 @@ namespace NapierBankMessenger.MVVM.Model
         public string Body { get; private set; }  // Text content of the message
     
         // Default param for subject since this will only be overwritten for Email messages
-        protected Message(string sender, string body)
-        {
-            this.Header = type + IDSelector.ToString("000000000");
+        protected Message(string sender, string body, string subject="")
+        {  
             this.Sender = sender;
             this.Body = body;
-            this.Subject = "";
+            this.Subject = subject;
             IDSelector += 1;
         }
 
@@ -43,16 +41,25 @@ namespace NapierBankMessenger.MVVM.Model
         // For searching for specific messages
         public abstract bool FindMatch(string searchQuery);
 
+        // Set the header as a unique value preficed by the message type
+        public abstract void FormatHeader();
+
         // Finds any abbreviations noted in the csv file and replaces them
         public string FindAbbreviations(string bodyText)
         {
-            for (int i = 0; i < Textspeak.GetAbbreviations().Count; i++)
-            {
-                if (bodyText.Contains(Textspeak.GetAbbreviations()[i]))
-                    // Example: replace 'ROFL' with 'ROFL <Rolls on floor laughing>'
-                    bodyText.Replace(Textspeak.GetAbbreviations()[i], Textspeak.GetAbbreviations()[i] + " <" + ReplaceAbbreviations(i) + ">");
+            // Store abbreviations so we are not continually fetching the list for every check
+            List<string> abb = Textspeak.GetAbbreviations();
+
+            // Had to create new string, strings are immutable in C# !
+            string newBody = bodyText;
+
+            for (int i = 0; i < abb.Count; i++)
+            {                 
+                if (bodyText.Contains(abb[i]))
+                    // Example: replace 'AAP', with 'AAP <Always a pleasure>'
+                    newBody = bodyText.Replace(abb[i], abb[i] + " <" + ReplaceAbbreviations(i) + ">");
             }
-            return bodyText;
+            return newBody;
         }
 
         // Given an abbreviations list index, return the phrases counterpart
@@ -65,6 +72,7 @@ namespace NapierBankMessenger.MVVM.Model
         // Getters + Setters
         public string   GetMessageType(){ return type; }
         public void     SetType(string type) { this.type = type; }
+        public void     SetHeader(string header) { this.Header = header; }
         public string   GetHeader(){ return Header; }
         public string   GetSender(){ return Sender; }
         public string   GetBody() { return Body; }

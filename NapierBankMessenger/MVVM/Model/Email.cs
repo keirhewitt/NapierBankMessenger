@@ -13,17 +13,22 @@ namespace NapierBankMessenger.MVVM.Model
         private List<string> _quarantinedURLS = new List<string>();
 
         // Subclass contains unique subject method
-        public Email(string sender, string body, string subject) : base(sender, body)
+        public Email(string sender, string body, string subject) : base(sender, body, subject)
         {
-            SetType("E");
             this.subject = subject;
             FormatBody();
+            FormatHeader();
         }
 
         // Return true/false if search term exists in Sender, Body and Subject
         public override bool FindMatch(string searchQuery)
         {
             return GetSender().Contains(searchQuery) || GetBody().Contains(searchQuery) || subject.Contains(searchQuery);
+        }
+
+        public override void FormatHeader()
+        {
+            SetHeader("E" + IDSelector.ToString("000000000"));
         }
 
         // Format the hyperlinks

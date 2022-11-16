@@ -5,10 +5,10 @@ namespace NapierBankMessenger.MVVM.Model
     public class SMS : Message
     {
         // Inherits all base constructor behaviour
-        public SMS(string sender, string body) : base(sender, body) 
+        public SMS(string sender, string body) : base(sender, body, "") 
         { 
-            SetType("S");
             FormatBody();
+            FormatHeader();
         }
 
         // Overridden search query function
@@ -21,6 +21,11 @@ namespace NapierBankMessenger.MVVM.Model
         public override void FormatBody()
         {
             SetBody(FindAbbreviations(GetBody()));
-        }       
+        }
+
+        public override void FormatHeader()
+        {
+            SetHeader("S" + IDSelector.ToString("000000000"));
+        }
     }
 }

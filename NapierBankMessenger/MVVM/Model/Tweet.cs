@@ -17,8 +17,8 @@ namespace NapierBankMessenger.MVVM.Model
 
         public Tweet(string sender, string body) : base(sender, body)
         {
-            SetType("T");
             FormatBody();
+            FormatHeader();
         }
 
         // Overridden search query function
@@ -32,6 +32,11 @@ namespace NapierBankMessenger.MVVM.Model
         {
             SetBody(FindAbbreviations(GetBody()));
             GetHashtagsAndMentions();
+        }
+
+        public override void FormatHeader()
+        {
+            SetHeader("T" + IDSelector.ToString("000000000"));
         }
 
         // Add Hashtags and Mentions to relevant lists.
