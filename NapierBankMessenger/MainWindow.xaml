@@ -41,6 +41,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
+            
+            <!-- Toolbar in top right -->
             <StackPanel 
                 Grid.Row="0" 
                 Grid.Column="2"
@@ -106,7 +108,9 @@
                              FontSize="14"
                              Style="{StaticResource NavigationLinks}"/>
 
-                <!-- Potential evolution content -->
+                <!-- !! EVOLUTION !! -->
+                <!-- Additional functionality for taking requests -->
+                <!-- Also perhaps looking into past messages/requests -->
                 <RadioButton Content="Requests"
                              Height="50"
                              Foreground="White"
@@ -114,7 +118,7 @@
                              IsEnabled="False"
                              Style="{StaticResource NavigationLinks}"/>
 
-                <!-- Potential evolution content -->
+                <!-- See above -->
                 <RadioButton Content="History"
                              Height="50"
                              Foreground="White"
@@ -124,7 +128,9 @@
 
             </StackPanel>
 
+            <!-- !! EVOLUTION !! -->
             <!-- Main search box in top column -->
+            <!-- At later point, could implement message searching -->
             <TextBox Width="380"
                      Height="40"
                      VerticalContentAlignment="Center"

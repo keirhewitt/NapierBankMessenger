@@ -18,18 +18,24 @@ using System.Windows.Shapes;
 namespace NapierBankMessenger.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for EndOfSession.xaml
+    /// Handles the end of program logic.
+    /// Will display the trending data at the end.
+    /// Click the button at the bottom of View to exit program.
     /// </summary>
     public partial class EndOfSession : UserControl
     {
         Controller Ctrl;
+        EndOfSessionViewModel EOS;
+
         public EndOfSession(Controller ctrl)
         {
             InitializeComponent();
-            DataContext = new EndOfSessionViewModel(ctrl);
+            EOS = new EndOfSessionViewModel(ctrl);
             Ctrl = ctrl;
+            DataContext = Ctrl;
         }
 
+        // When program finishes, send data to json and then shutdown application
         private void OnFinish(object sender, RoutedEventArgs e)
         {
             Ctrl.SendToJSON();

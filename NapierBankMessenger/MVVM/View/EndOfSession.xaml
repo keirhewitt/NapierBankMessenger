@@ -14,20 +14,33 @@
                 Width="400"
                 HorizontalAlignment="Center">
 
-                <StackPanel Margin="5,5,5,20">
-                    <Label Width="350" Content="Trending" Background="LightGreen"/>
-                    <TextBlock Width="350" Height="90" Background="#FAFAFA" />
+                <StackPanel Margin="0, 0, 0, 5">
+                    <Label Content="Trending" Background="LightGreen"/>
+                    <ListView 
+                        ItemsSource="{Binding TrendingList}"
+                        ItemContainerStyle="{StaticResource TrendingListItem}"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        Height="90"
+                        MaxHeight="90">
+                    </ListView>
                 </StackPanel>
 
-                <StackPanel Margin="5,5,5,20">
-                    <Label Width="350" Content="Mentions" Background="LightGray"/>
-                    <TextBlock 
-                        Width="350" 
-                        Height="90" 
-                        Background="#FAFAFA"/>
+                <StackPanel Margin="0, 0, 0, 5">
+                    <Label Content="Mentions" Background="LightGray"/>
+                    <ListView 
+                        ItemsSource="{Binding TwitterMentions}"
+                        ItemContainerStyle="{StaticResource TrendingListItem}"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        Height="90"
+                        MaxHeight="90">
+                    </ListView>
                 </StackPanel>
-
-                <StackPanel Margin="5,5,5,20">
+                
+                <StackPanel>
                     <Label Content="Serious Incident Reports" Background="LightCoral"/>
                     <ListView 
                         ItemsSource="{Binding SIRs}"
@@ -35,16 +48,20 @@
                         ScrollViewer.VerticalScrollBarVisibility="Visible"
                         ScrollViewer.CanContentScroll="True"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        MaxHeight="120">
+                        Height="225"
+                        MaxHeight="225">
 
                     </ListView>
                 </StackPanel>
 
                 <StackPanel>
                     <Button 
-                        Content="Finish" 
-                        Width="100"
-                        Padding="3" Click="OnFinish"/>
+                        Content="End Session" 
+                        Height="32"
+                        Background="#1f004d"
+                        Foreground="#FAFAFA"
+                        FontWeight="Bold"
+                        Click="OnFinish"/>
                 </StackPanel>
 
             </StackPanel>

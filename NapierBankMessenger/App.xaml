@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="Style/NavigationLinks.xaml"/>
                 <ResourceDictionary Source="Style/SearchBar.xaml"/>
                 <ResourceDictionary Source="Style/MessageListItem.xaml"/>
+                <ResourceDictionary Source="Style/TrendingListItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

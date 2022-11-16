@@ -101,27 +101,11 @@ namespace NapierBankMessenger.MVVM.Model
             return "";
         }
 
-        // Create format for JSON serialize settings
-        // Instantiates TypeNameHandling for all types so that inherited classes can be deserialized properly
-        public JsonSerializerSettings GetJSONSettings()
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-            return settings;
-        }
-
-        // Sends a single message to the json file
+        // Sends list of messages to JSON file
         public void SendToJSON()
         {
             ConvertToSerializableList();
             File.WriteAllText(ReturnJSONFilepath(), JsonConvert.SerializeObject(serializableList, Formatting.Indented));          
-        }
-
-        public void LoadMessagesFromJSON()
-        {
-
         }
 
         private void ConvertToSerializableList()
@@ -160,6 +144,7 @@ namespace NapierBankMessenger.MVVM.Model
         {
             foreach(string q_url in sir.GetQuarantinedURLs())
                 AddToDictionary(QuarantineList, q_url);
+            SIRs.Add(sir);
             Messages.Add(sir);
             
         }
@@ -193,12 +178,12 @@ namespace NapierBankMessenger.MVVM.Model
         {
             if (message is Tweet)
                 AddTweet((Tweet)message);
+            else if (message is SIR)
+                AddSIR((SIR)message);
             else if (message is Email)
                 AddEmail((Email)message);
             else if (message is SMS)
-                AddSMS((SMS)message);
-            else if (message is SIR)
-                AddSIR((SIR)message);
+                AddSMS((SMS)message);     
             else
                 return;
         }
@@ -219,13 +204,10 @@ namespace NapierBankMessenger.MVVM.Model
             dict = dict.OrderBy(key => key.Value).ToDictionary(key => key.Key, key => key.Value);
         }
 
-
-
-
         // TEST FUNCTION
         private void TestFunction()
         {
-            Message testMsg1 = new SMS("07854215232", "Test Message #1");
+            Message testMsg1 = new SMS("07854215232", "Yeah I heard ROTFL !");
             Message testMsg2 = new Email
                 (
                     "keir11@hotmail.com",
@@ -234,13 +216,10 @@ namespace NapierBankMessenger.MVVM.Model
                 );
             Message testMsg3 = new Tweet
                 (
-                    "@Keir__HEWitt",
-                    "Reminding you to keep your login details safe and step away from unsafe URLs. " +
-                    "If you see a suspicious email, message, or notice that looks like it’s from us," +
-                    " remember we'll never ask for login info via email, DM, or non-Twitter website." +
-                    "https://www.wayfair.co.uk/garden/sb0/conversations-sets-c1876293.html this is an email link"
+                    "@Twitter_Support",
+                    "Twitter will never ask for your login details #support #secure"
                 );
-            Message testMsg4 = new SMS("+448843221230", "Twitter message 3, this is a test!");
+            Message testMsg4 = new SMS("+448843221230", "Just got in the house sorry! Yeah I can make it. SLAP mate. ");
             Message testMsg5 = new Email
                 (
                     "victoria.jast@hotmail.com", "Good Morning\n\n, " +
@@ -251,23 +230,20 @@ namespace NapierBankMessenger.MVVM.Model
                     "Keir",
                     "Cast Iron Downpipe Query"
                 );
-            Message testMsg6 = new Email("emmet30@yahoo.com", "Pretend email Body.", "Test subject");
-            Message testMsg7 = new Tweet("@_001sfc", "Gerard Piqué announces he is retiring from football and will play his last match for Barcelona this Saturday 🔵🔴");
-            Message testMsg8 = new Tweet("@Cristiano", "We move on and we keep going after our goals this season! Thanks to our supporters that never give up on us!👏🏽");
-            Message testMsg9 = new SMS("09968458932", "Leaving in 10.");
+            Message testMsg6 = new Email("emmet30@yahoo.com", "I've just received this. Thank you.", "RE: Today's headings!!");
+            Message testMsg7 = new Tweet("@_001sfc", "Gerard Piqué announces he is retiring from football and will play his last match for Barcelona this Saturday #WorldCup");
+            Message testMsg8 = new SIR("harryJones@hotmail.com", "222343\\nATM Theft", "SIR 11/10/22"); 
+            Message testMsg9 = new SMS("09968458932", "Leaving in 10. SYS");
             Message testMsg10 = new Tweet
                 (
                     "@Keir__HEWitt",
-                    "Eli: Lets go to Peyton. Hes going to breakdown that touchdown." +
-                    "Peyton: Can't hear sh-t" +
-                    "Eli: Nevermind" +
-                    "😂😂😂"
+                    "World Cup soon! #WorldCup #WorldCup #Football"
                 );
-            Message testMsg11 = new Tweet("@__Edd_", "Walmart be havin 80 year old Grandmas watchin the door, Ofc ima steal 💀💀💀");
+            Message testMsg11 = new SIR("keir1@gmail.com", "832325\\nTheft", "SIR 15/11/22");
             Message testMsg12 = new Tweet
                 (
                     "@dodhria",
-                    "Update mais 🇧🇷PATRIOTA @twitter_user223 do Eurotruck!" +
+                    "Update mais 🇧🇷PATRIOTA @twitter_user223 do Eurotruck! #EuroTruck #Spain #Relaxing \n " +
                     "GRANDE DIA!!! 👍👍👍"
                 );
 
