@@ -1,24 +1,32 @@
-﻿using System.Text.Json;
+﻿
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NapierBankMessenger.MVVM.ViewModel;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
+using System;
+using Newtonsoft.Json.Linq;
 
 namespace NapierBankMessenger.MVVM.Model 
 {
+    /// <summary>
+    /// Controller acts as a centralized point for all Model data
+    /// Handles the storage and manipulation of Message objects
+    /// </summary>
     public class Controller : ScriptableObject
     {
+        // JSON file variables
         protected readonly string filePath = Directory.GetCurrentDirectory();
         protected readonly string[] filePaths = { @"C:\Users", "Keir", "Desktop", "courseworkdata" };
         protected readonly string fileName = @"export.json";
-
         private string fullpath;
 
-        private ObservableCollection<Message> _messages;
-        private ObservableCollection<SIR> _sirList;
         private List<Message> serializableList;
+
+        private ObservableCollection<Message> _messages;// Where all of the messages are stored, Messages property will access this
+        private ObservableCollection<SIR> _sirList;     // Where all of the SIRs are stored, SIRs property will access this
+
         private Dictionary<string, int> _mentionsList;  // Collection of all mentions in any session
         private Dictionary<string, int> _trendingList;  // Collection of all hashtags in any session
         private Dictionary<string, int> _quarantineList;// Collection of quarantined URLs
@@ -62,16 +70,16 @@ namespace NapierBankMessenger.MVVM.Model
             _mentionsList = new Dictionary<string, int>();
             _trendingList = new Dictionary<string, int>();
             _quarantineList = new Dictionary<string, int>();
-            InitJSONFile();
+            InitJSONFile(fileName);
         }
 
         // Creates JSON file if one does not exist in location
-        public void InitJSONFile()
+        public void InitJSONFile(string filename)
         {
             fullpath = Path.Combine(filePaths);
-            if (!FileExists(fullpath, fileName))
+            if (!FileExists(fullpath, filename))
             {
-                FileStream stream = File.Create(fullpath + "/" + fileName);
+                FileStream stream = File.Create(fullpath + "/" + filename);
             }          
         }
 
@@ -105,12 +113,21 @@ namespace NapierBankMessenger.MVVM.Model
         public void SendToJSON()
         {
             ConvertToSerializableList();
-            File.WriteAllText(ReturnJSONFilepath(), JsonConvert.SerializeObject(serializableList, Formatting.Indented));          
+            string x = JsonConvert.SerializeObject(
+                serializableList, 
+                Formatting.Indented, 
+                new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                });
+
+            File.WriteAllText(ReturnJSONFilepath(), x);
         }
 
+        // Converts objects to a serializable List<Message>
         private void ConvertToSerializableList()
         {
-            serializableList = _messages.ToList();
+            serializableList = _messages.ToList();       
         }
 
         // Add Hashtags and Mentions to the relevant lists
@@ -198,70 +215,17 @@ namespace NapierBankMessenger.MVVM.Model
 
         }
 
-        // Take dictionary and re-order it by Value
+        // Take dictionary and re-order it by Value (ascending)
         public void OrderDictionary(Dictionary<string, int> dict)
         {
             dict = dict.OrderBy(key => key.Value).ToDictionary(key => key.Key, key => key.Value);
         }
 
-        // TEST FUNCTION
-        private void TestFunction()
-        {
-            Message testMsg1 = new SMS("07854215232", "Yeah I heard ROTFL !");
-            Message testMsg2 = new Email
-                (
-                    "keir11@hotmail.com",
-                    "Hi all, this is a test email.",
-                    "RE: How are you?"
-                );
-            Message testMsg3 = new Tweet
-                (
-                    "@Twitter_Support",
-                    "Twitter will never ask for your login details #support #secure"
-                );
-            Message testMsg4 = new SMS("+448843221230", "Just got in the house sorry! Yeah I can make it. SLAP mate. ");
-            Message testMsg5 = new Email
-                (
-                    "victoria.jast@hotmail.com", "Good Morning\n\n, " +
-                    "I’ve recently had work done on the cast iron downpipe outside my flat and was advised to get an ASAP fix.\n" +
-                    "All pieces are damaged and leaking, as well as some cracked brackets – is this something that you could fix ?\n" +
-                    "Images of https://www.wayfair.co.uk/garden/sb0/conversations-sets-c1876293.htmls the damage attached above.\n" +
-                    "Thanks for your time.\n" +
-                    "Keir",
-                    "Cast Iron Downpipe Query"
-                );
-            Message testMsg6 = new Email("emmet30@yahoo.com", "I've just received this. Thank you.", "RE: Today's headings!!");
-            Message testMsg7 = new Tweet("@_001sfc", "Gerard Piqué announces he is retiring from football and will play his last match for Barcelona this Saturday #WorldCup");
-            Message testMsg8 = new SIR("harryJones@hotmail.com", "222343\\nATM Theft", "SIR 11/10/22"); 
-            Message testMsg9 = new SMS("09968458932", "Leaving in 10. SYS");
-            Message testMsg10 = new Tweet
-                (
-                    "@Keir__HEWitt",
-                    "World Cup soon! #WorldCup #WorldCup #Football"
-                );
-            Message testMsg11 = new SIR("keir1@gmail.com", "832325\\nTheft", "SIR 15/11/22");
-            Message testMsg12 = new Tweet
-                (
-                    "@dodhria",
-                    "Update mais 🇧🇷PATRIOTA @twitter_user223 do Eurotruck! #EuroTruck #Spain #Relaxing \n " +
-                    "GRANDE DIA!!! 👍👍👍"
-                );
+        // Returns the dictionary of Quarantined URLS (mainly for testing)
+        public Dictionary<string, int> GetQuarantinedURLs() { return _quarantineList; }
 
-            /* !! Add these using the above methods !! */
-            AddMessage(testMsg1);
-            AddMessage(testMsg2);
-            AddMessage(testMsg3);
-            AddMessage(testMsg4);
-            AddMessage(testMsg5);
-            AddMessage(testMsg6);
-            AddMessage(testMsg7);
-            AddMessage(testMsg8);
-            AddMessage(testMsg9);
-            AddMessage(testMsg10);
-            AddMessage(testMsg11);
-            AddMessage(testMsg12);
+        // Returns the dictionary of SIRs (mainly for testing)
+        public ObservableCollection<SIR> GetSIRList() { return _sirList; }
 
-
-        }
     }
 }

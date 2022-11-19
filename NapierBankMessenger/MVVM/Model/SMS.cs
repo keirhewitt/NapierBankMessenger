@@ -1,7 +1,9 @@
-﻿using NapierBankMessenger.MVVM.FileIO;
-
+﻿
 namespace NapierBankMessenger.MVVM.Model
 {
+    /// <summary>
+    /// SMS messages need to find and format the abbreviations in the body text
+    /// </summary>
     public class SMS : Message
     {
         // Inherits all base constructor behaviour

@@ -1,11 +1,11 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NapierBankMessenger.MVVM.Model
 {
+    /// <summary>
+    /// Tweet objects are to keep track of hashtags and mentions.
+    /// </summary>
     public class Tweet : Message
     {
         /* Lists of hashtags and mentions means that the Controller
@@ -34,6 +34,7 @@ namespace NapierBankMessenger.MVVM.Model
             GetHashtagsAndMentions();
         }
 
+        // Override the FormatHeader to use unique char 'T'
         public override void FormatHeader()
         {
             SetHeader("T" + IDSelector.ToString("000000000"));

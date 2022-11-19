@@ -1,5 +1,6 @@
 ﻿
 using NapierBankMessenger.MVVM.FileIO;
+using System;
 using System.Collections.Generic;
 
 namespace NapierBankMessenger.MVVM.Model
@@ -16,6 +17,10 @@ namespace NapierBankMessenger.MVVM.Model
      *                                 -- BODY - sort code xx-xx-xx, Nature of incident (list of incidents given)
      *                                 -- Extra -> Sort Code and Nature of Incident written to a SIR list
      *                                 -- Any URLS will be removed and written to a quarantine list and replaced with <`URL Quarantined> in the BODY
+     *                                 
+       /// <summary>
+       /// Abstract class which all Message types will be based on.
+       /// </summary>
      */
     public abstract class Message
     {
@@ -38,6 +43,7 @@ namespace NapierBankMessenger.MVVM.Model
         // Implemented by each subclass to format their respective Body texts i.e. URLs, hyperlinks etc.
         public abstract void FormatBody();
 
+        // !! EVOLUTION !!
         // For searching for specific messages
         public abstract bool FindMatch(string searchQuery);
 
@@ -53,11 +59,19 @@ namespace NapierBankMessenger.MVVM.Model
             // Had to create new string, strings are immutable in C# !
             string newBody = bodyText;
 
+            // Split into words, separate punctuation also i.e. LOL! = {'LOL', '!'} rather than: {'LOL!'}
+            string[] bodySplit = bodyText.Split(new char[] { ' ', ',', '-', '!', '.' }, StringSplitOptions.RemoveEmptyEntries);
+
             for (int i = 0; i < abb.Count; i++)
-            {                 
-                if (bodyText.Contains(abb[i]))
-                    // Example: replace 'AAP', with 'AAP <Always a pleasure>'
-                    newBody = bodyText.Replace(abb[i], abb[i] + " <" + ReplaceAbbreviations(i) + ">");
+            {
+                foreach (string word in bodySplit)
+                {
+                    if (word.Equals(abb[i]))
+                    {
+                        // Example: replace 'AAP', with 'AAP <Always a pleasure>'
+                        newBody = bodyText.Replace(abb[i], abb[i] + " <" + ReplaceAbbreviations(i) + ">");
+                    }                  
+                }
             }
             return newBody;
         }

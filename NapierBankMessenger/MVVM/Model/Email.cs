@@ -1,10 +1,13 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace NapierBankMessenger.MVVM.Model
 {
+    /// <summary>
+    /// Email (+ SIR) replace URLs in body with placeholder URL and store the full text one 
+    /// They also have a non-empty subject
+    /// </summary>
     public class Email : Message
     {
         private string subject;
@@ -49,7 +52,7 @@ namespace NapierBankMessenger.MVVM.Model
                 if (Uri.TryCreate(word, UriKind.Absolute, out temp))
                 {
                     // Separate out the actual URL and add it to Quarantined list
-                    actualUrl = "<" + word + ">";
+                    actualUrl = word;
                     _quarantinedURLS.Add(actualUrl);
 
                     // Replace the displayed text with the placeholder text
