@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
+    /// <summary>
+    /// Controller passes this class all of the relevant End of Session data to be displayed in it's counterpart View
+    /// </summary>
     public class EndOfSessionViewModel : ScriptableObject
     {
         private Controller Ctrl;

@@ -1,15 +1,17 @@
 ﻿
 using NapierBankMessenger.Commands;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 using NapierBankMessenger.MVVM.Model;
 using System;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
+    /// <summary>
+    /// Data Context for the Input Parser, passes data from the UI to the validation View Model and receives error messages
+    /// Will make the final decision on whether to create the User defined Message
+    /// </summary>
     public class InputParserViewModel : ScriptableObject, IDataErrorInfo
     {
         private readonly string[] email_format_sequences = { "@hotmail.com", "@gmail.com", "@live.napier.ac.uk" };
@@ -20,12 +22,10 @@ namespace NapierBankMessenger.MVVM.ViewModel
         private string _subject;
         private string _body;
 
-        // Properties of the submitted message into the appropriate format
-        private string _output_sender;
-        private string _output_subject;
-        private string _output_body;
+        // Output of message input by user, displayed as feedback
         private string _output;
 
+        // Is subject required for message? Email/SIR-
         private bool subjectRequired = false;
 
         public ICommand ParseDataButton { get; private set; }
@@ -47,12 +47,15 @@ namespace NapierBankMessenger.MVVM.ViewModel
         // Binded to Subject Text Box - Field linked with "IsEnabled"
         public bool SubjectLineEnabled { get => subjectRequired; set { subjectRequired = value; } }
 
+        // Sender notifies each field as to which type of Message the user is trying to create
+        // This will inform the subsequent validation
         public string Sender 
         {
             get => _sender;
             set
             {
                 _sender = value;
+
                 // IF Sender line is in Email format, enable Subject Box
                 if (validationModel.CheckForEmail(Sender))
                 {
@@ -91,6 +94,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
         public string Error { get => null; }
 
         // Return DataErrors specific to each field
+        // Gets return message from GetFieldValidationErrors() function
         public string this[string field]
         {
             get => GetFieldValidationErrors(field);
@@ -106,8 +110,11 @@ namespace NapierBankMessenger.MVVM.ViewModel
         // Collects the validation errors for each field
         private string GetFieldValidationErrors(string propName)
         {
+            // Initialize a null error every time before validating
+            // Stops it from returning old errors
             string fieldError = null;
 
+            // Validation whichever field was passed through
             switch (propName)
             {
                 case "Sender":
@@ -129,8 +136,10 @@ namespace NapierBankMessenger.MVVM.ViewModel
         // Checks if ready to submit message
         private bool ParseCondition(object data)
         {
+            // Get confirmation from validation view model
             if (validationModel.ReadyToParseData())
             {
+                // Make sure no fields have errors
                 if (GetFieldValidationErrors("Sender") == "" && 
                     GetFieldValidationErrors("Subject") == "" &&
                     GetFieldValidationErrors("Body") == "")
@@ -163,8 +172,11 @@ namespace NapierBankMessenger.MVVM.ViewModel
             {
                 Ctrl.AddMessage(new SIR(Sender, Body, Subject));
             }
+
+            // Display output as some feedback to user
             Output = Ctrl.Messages.Last().ToString();
         }
+
 
     }
 }

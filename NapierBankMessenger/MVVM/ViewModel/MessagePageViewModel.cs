@@ -1,8 +1,13 @@
-﻿using NapierBankMessenger.MVVM.Model;
+﻿
+using NapierBankMessenger.MVVM.Model;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
+    /// <summary>
+    /// Handles the displaying of each message as a counterpart to the MessagePage View
+    /// </summary>
     public class MessagePageViewModel : ScriptableObject
     {
         private string _messageListHeader = "Messages";

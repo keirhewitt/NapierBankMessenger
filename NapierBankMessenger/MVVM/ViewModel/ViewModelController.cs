@@ -3,6 +3,9 @@ using NapierBankMessenger.MVVM.Model;
 
 namespace NapierBankMessenger.MVVM.ViewModel
 {
+    /// <summary>
+    /// Central View Model controller, determines which View's are to be shown
+    /// </summary>
     public class ViewModelController : ScriptableObject
     {
         private MessagePage MsgPage { get; }
@@ -65,7 +68,7 @@ namespace NapierBankMessenger.MVVM.ViewModel
             get { return _onAppExit; }
             set
             {
-                MultiView = EOS;
+                MultiView = EOS; 
                 OnPropertyChanged();
             }
         }
