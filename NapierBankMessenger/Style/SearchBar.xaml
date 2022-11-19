@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Styling for a search bar, does not have functionality yet -->
+    <!-- Shown for evolution purposes -->
     <Style TargetType="{x:Type TextBox}"
            x:Key="SearchBar">
         <Setter Property="Template">

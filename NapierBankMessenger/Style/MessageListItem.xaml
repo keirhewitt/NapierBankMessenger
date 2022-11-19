@@ -2,19 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style TargetType="ListViewItem" x:Key="MessageListItem">
         <Style.Triggers>
+            
+            <!-- Trigger for if the ListViewItem has been clicked -->
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="DarkSeaGreen" />
                 <Setter Property="BorderThickness" Value="1" />
             </Trigger>
+            
         </Style.Triggers>
+        
         <Setter Property="Background" Value="#FF8CAFB3" />
         <Setter Property="Template">
+            
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
                     <Border 
                         Background="{TemplateBinding Background}"
                         MinHeight="70"
-                        Margin="0,0,0,1">
+                        Margin="0,0,0,1"
+                        CornerRadius="3">
                         
                         <!-- Vertical stack panel for displaying Header above Body attributes of Message -->
                         <StackPanel 
@@ -23,7 +29,7 @@
                             <Border Background="DarkGray" />
                             <StackPanel>
                                 <Label>
-                                    <!-- Bind to Message property and trail messages that are too long -->
+                                    <!-- Bind to Message property and trail messages that are too long (not validation) -->
                                     <TextBlock 
                                         Text="{Binding Sender}" 
                                         TextTrimming="CharacterEllipsis"
@@ -32,6 +38,7 @@
                                         MaxWidth="370"/>
                                 </Label>
                                 <Label>
+                                    <!-- Bind to Message property and trail messages that are too long (not validation) -->
                                     <TextBlock 
                                         Text="{Binding Body}"
                                         TextTrimming="CharacterEllipsis"
