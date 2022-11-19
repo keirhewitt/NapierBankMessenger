@@ -95,7 +95,7 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 Foreground="White"
-                FontSize="38"
+                FontSize="26"
                 Margin="10,0,0,0"
                 />
             
