@@ -10,10 +10,12 @@ namespace NapierBankMessenger.MVVM.View
     /// </summary>
     public partial class InputParser : UserControl
     {
+
         public InputParser(Controller ctrl)
         {
             InitializeComponent();
             DataContext = new InputParserViewModel(ctrl);
         }
+
     }
 }
