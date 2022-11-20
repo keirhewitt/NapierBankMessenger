@@ -7,12 +7,14 @@ using System.Linq;
 
 namespace NapierBankUnitTests
 {
+    /// <summary>
+    /// Test the methods inside the Controller.
+    /// </summary>
     [TestClass]
     public class UnitTestController
     {
         Controller ctrl = new Controller();
         PrivateObject controllerClass = new PrivateObject(typeof(Controller));
-        readonly string filename = "newfile.json";
 
         Dictionary<string, int> mentionsTest = new Dictionary<string, int>();
         Dictionary<string, int> hashtagsTest = new Dictionary<string, int>();
@@ -21,6 +23,7 @@ namespace NapierBankUnitTests
         // Tests that the controller methods are able to create a file and 
         public void TestFileCreation()
         {
+            string filename = "newfile.json";
             ctrl.InitJSONFile(filename);
             bool result = Convert.ToBoolean(controllerClass.Invoke("FileExists", "C:\\Users\\Keir\\Desktop\\courseworkdata", filename));
 
@@ -30,8 +33,7 @@ namespace NapierBankUnitTests
         [TestMethod]
         // Test that the mechanism for adding Mentions/hashtags to dictionaries is working OK.
         public void TestAddingTrends()
-        {
-            
+        {        
             string[] mentions = { "@keirhewitt", "@johndoe", "@lancearmstrong", "@Jason_file", "@jack__jill", "@keirhewit", "@keirhewitt", "@.johndoe", };
             string[] hashtags = { "#keirhewitt", "#johndoe", "#lancearmstrong", "#Jason_file", "#jack__jill", "#keirhewit", "#keirhewitt", "#.johndoe", };
 
@@ -50,16 +52,24 @@ namespace NapierBankUnitTests
         }
 
         [TestMethod]
-        // Test that the mechanism for adding Mentions/hashtags to dictionaries is working OK.
+        // Test that the mechanism for removing Mentions/hashtags to dictionaries is working OK.
         public void TestRemovingTrends()
         {
+            string[] mentions = { "@keirhewitt", "@johndoe", "@lancearmstrong", "@Jason_file", "@jack__jill", "@keirhewit", "@keirhewitt", "@.johndoe", };
+            string[] hashtags = { "#keirhewitt", "#johndoe", "#lancearmstrong", "#Jason_file", "#jack__jill", "#keirhewit", "#keirhewitt", "#.johndoe", };
+
+            foreach (string mention in mentions)
+                ctrl.AddToDictionary(mentionsTest, mention);
+            foreach (string hashtag in hashtags)
+                ctrl.AddToDictionary(hashtagsTest, hashtag);
+
             ctrl.RemoveFromDictionary(mentionsTest, "@keirhewitt");
             ctrl.RemoveFromDictionary(mentionsTest, "@johndoe");
 
-            bool ans = mentionsTest.ContainsKey("@johndoe");
+            bool ans = mentionsTest.TryGetValue("@johndoe", out int value);
             Assert.IsFalse(ans); // Assert that @johndoe key check is null after removing
             Assert.AreEqual(1, mentionsTest["@keirhewitt"]); // Assert that the value of @keirhewitt = 1 after removing one of them
-            Assert.AreEqual(7, mentionsTest.Count); // Assert that this is still 7, since a key/value pair was NOT removed
+            Assert.AreEqual(6, mentionsTest.Count); // Assert that this is still 7, since a key/value pair was NOT removed
         }
 
         [TestMethod]

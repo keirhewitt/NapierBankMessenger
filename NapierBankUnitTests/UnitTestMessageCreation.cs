@@ -4,13 +4,15 @@ using NapierBankMessenger.MVVM.FileIO;
 
 namespace NapierBankUnitTests
 {
+    /// <summary>
+    /// Test Message object creations and that the methods are working correctly.
+    /// </summary>
     [TestClass]
     public class UnitTestMessageCreation
     {
         [TestMethod]
-        // Make sure email is added correctly
-        // Make sure URL is stored in quarantine storage
-        // Ensure that when an Email message is added that you can return the url inside the body via the quarantineList
+        // Make sure email object is created properly
+        // Ensure that the FormatURL() method parses strings with URLs appropriately
         public void TestEmailObject()
         {
             Textspeak.IO();
@@ -18,16 +20,19 @@ namespace NapierBankUnitTests
             string testExpected = "Responding to your query at <URL Quarantined> - I think we can have that brought to the store.";
 
             Email testemail = new Email("keir11@hotmail.com", "This is", "for testing.");
-            Assert.AreEqual(testemail.FormatURL(testBody), testExpected);
-            
+            Assert.AreEqual(testemail.FormatURL(testBody), testExpected);         
         }
 
         [TestMethod]
-        // Test that when a SIR is added, it goes into the SIR list
-        // Test that the incident type is stored correctly
+        // Test that when a SIR object is created and that the relevant information can be accessed.
         public void TestSIRObject()
         {            
             Textspeak.IO();
+            string testNOI = "ATM Theft";
+            string testSubject = "SIR 11/08/21";
+            SIR testsir = new SIR("Keir21@outlook.com", "85-44-23\nATM Theft", "SIR 11/08/21");
+            Assert.AreEqual(testNOI, testsir.GetIncidentType());
+            Assert.AreEqual(testSubject, testsir.GetSubject());
         }
 
         [TestMethod]
@@ -47,12 +52,11 @@ namespace NapierBankUnitTests
             Assert.AreEqual(expected1, testsms1.GetBody());
             Assert.AreEqual(expected2, testsms2.GetBody());
             Assert.AreEqual(expected3, testsms3.GetBody());
-
         }
 
         [TestMethod]
         // Test that Tweet objects are added
-        // Test that Tweet abbreviations are being handled properly
+        // Test that Tweet abbreviations are being appropriately formatted in the body
         public void TestTweetObject()
         {
             Textspeak.IO();
