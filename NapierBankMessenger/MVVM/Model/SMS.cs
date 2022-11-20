@@ -25,6 +25,7 @@ namespace NapierBankMessenger.MVVM.Model
             SetBody(FindAbbreviations(GetBody()));
         }
 
+        // Create a unique header for SMS
         public override void FormatHeader()
         {
             SetHeader("S" + IDSelector.ToString("000000000"));

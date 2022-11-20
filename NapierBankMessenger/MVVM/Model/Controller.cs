@@ -5,8 +5,6 @@ using NapierBankMessenger.MVVM.ViewModel;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
-using System;
-using Newtonsoft.Json.Linq;
 
 namespace NapierBankMessenger.MVVM.Model 
 {

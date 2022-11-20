@@ -62,6 +62,7 @@ namespace NapierBankMessenger.MVVM.Model
             return text;
         }
 
+        // Getters
         public List<string> GetQuarantinedURLs() { return _quarantinedURLS; }
         public string GetSubject() {  return subject; }
 
