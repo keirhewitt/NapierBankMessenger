@@ -176,7 +176,5 @@ namespace NapierBankMessenger.MVVM.ViewModel
             // Display output as some feedback to user
             Output = Ctrl.Messages.Last().ToString();
         }
-
-
     }
 }
